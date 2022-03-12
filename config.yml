@@ -4,3 +4,6 @@ SERVER:
 
 FRONTEND:
   URL: http://localhost:3000
+
+JWT:
+  SECRET: secret
