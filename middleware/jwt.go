@@ -24,7 +24,7 @@ func SetError(err Error, message string) Error {
 func IsAuthorized(handler http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		if r.Header["Token"] == nil {
+		if r.Header["Authorization"] == nil {
 			var err Error
 			err = SetError(err, "No Token Found")
 			json.NewEncoder(w).Encode(err)
@@ -33,8 +33,9 @@ func IsAuthorized(handler http.HandlerFunc) http.HandlerFunc {
 
 		var secretKey = viper.GetString("JWT.SECRET")
 		var mySigningKey = []byte(secretKey)
+		tokenString := r.Header["Authorization"][0][7:]
+		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 
-		token, err := jwt.Parse(r.Header["Token"][0], func(token *jwt.Token) (interface{}, error) {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, fmt.Errorf("there was an error in parsing token")
 			}
@@ -52,6 +53,7 @@ func IsAuthorized(handler http.HandlerFunc) http.HandlerFunc {
 			username := claims["username"].(string)
 			r.Header.Set("username", username)
 			handler.ServeHTTP(w, r)
+			return
 		}
 		var reserr Error
 		reserr = SetError(reserr, "Not Authorized.")

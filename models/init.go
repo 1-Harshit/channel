@@ -11,4 +11,6 @@ func init() {
 	config.ConnectDB()
 	db = config.GetDB()
 	db.AutoMigrate(&Channel{})
+	db.AutoMigrate(&Message{})
+	db.AutoMigrate(&User{})
 }

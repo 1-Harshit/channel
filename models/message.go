@@ -15,6 +15,6 @@ func CreateMessage(content string, timeSentAt string, username string, channelId
 
 func GetMessages(channelId string) ([]Message, error) {
 	var messages []Message
-	err := db.Where("id = ?", channelId).Find(&messages).Error
+	err := db.Where("channel_id = ?", channelId).Find(&messages).Error
 	return messages, err
 }
