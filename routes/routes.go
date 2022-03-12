@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/1-Harshit/channel/controllers"
+	"github.com/1-Harshit/channel/middleware"
 	"github.com/gorilla/mux"
 )
 
@@ -19,7 +20,15 @@ func Setup() *mux.Router {
 func RegisterRoutes(router *mux.Router) {
 
 	// Channel
-	router.HandleFunc("/channel", controllers.CreateChannel).Methods("POST")
-	router.HandleFunc("/channels", controllers.GetAllChannels).Methods("GET")
+	router.HandleFunc("/channel", middleware.IsAuthorized(controllers.CreateChannel)).Methods("POST")
+	router.HandleFunc("/channels", middleware.IsAuthorized(controllers.GetAllChannels)).Methods("GET")
+
+	// Message
+	router.HandleFunc("/channel/{channelId}/message", middleware.IsAuthorized(controllers.CreateMessage)).Methods("POST")
+	router.HandleFunc("/channel/{channelId}/messages", middleware.IsAuthorized(controllers.GetMessages)).Methods("GET")
+
+	// User
+	router.HandleFunc("/user/login", controllers.Login).Methods("POST")
+	router.HandleFunc("/user/signup", controllers.Signup).Methods("POST")
 
 }
