@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const BASE_URL = "SOMETHING";
-const ERROR_MESSAGE = "Error in API CALL";
+const ERROR_MESSAGE = "Error in API Call";
 
 // Interfaces
 export interface SignupParams {
