@@ -143,62 +143,60 @@ function App() {
                 </Text>
                 <Tabs initialValue="1" align="center" leftSpace={0}>
                   <Tabs.Item label={<>Login Form</>} value="1">
-                    <Text mt={0}>Welcome back!</Text>
-                      <Grid.Container gap={2} justify="center">
-                        <Grid xs={24}>
-                          <Text h3>Login Form</Text>
-                        </Grid>
-                        <Grid xs={24}>
+                    <Grid.Container gap={2} justify="center">
+                      <Grid xs={24}>
+                        <Text h3>Login Form</Text>
+                      </Grid>
+                      <Grid xs={24}>
 
-                          <Input placeholder="Enter Username">
-                            Username
-                          </Input>
-                        </Grid>
-                        <Grid xs={24}>
-                          <Input.Password placeholder="Enter Password">
-                            Password
-                          </Input.Password>
-                        </Grid>
-                        <Grid xs={24}>
-                          <Button auto className="info-icon text-center" style={{ borderWidth: 0, justifyContent: "center", alignItems: "center" }}>
-                            <Spacer inline w={0.1} />
-                            Singin<Spacer w={0.5} /> <ArrowRight />
-                          </Button>
-                        </Grid>
-                      </Grid.Container>
+                        <Input placeholder="Enter Username">
+                          Username
+                        </Input>
+                      </Grid>
+                      <Grid xs={24}>
+                        <Input.Password placeholder="Enter Password">
+                          Password
+                        </Input.Password>
+                      </Grid>
+                      <Grid xs={24}>
+                        <Button auto className="info-icon text-center" style={{ borderWidth: 0, justifyContent: "center", alignItems: "center" }}>
+                          <Spacer inline w={0.1} />
+                          Singin<Spacer w={0.5} /> <ArrowRight />
+                        </Button>
+                      </Grid>
+                    </Grid.Container>
                   </Tabs.Item>
                   <Tabs.Item label={<>Singup Form</>} value="2">
-                    <Text mt={0}>Please Singup to continue...</Text>
-                      <Grid.Container gap={2} justify="center">
-                        <Grid xs={24}>
-                          <Text h3>Signup Form</Text>
-                        </Grid>
-                        <Grid xs={24}>
-                          <Input placeholder="Enter Name">
-                            Name
-                          </Input>
-                        </Grid><Grid xs={24}>
-                          <Input placeholder="Enter Username">
-                            Username
-                          </Input>
-                        </Grid>
-                        <Grid xs={24}>
-                          <Input.Password placeholder="Enter Password">
-                            Password
-                          </Input.Password>
-                        </Grid>
-                        <Grid xs={24}>
-                          <Input.Password placeholder="Re-Enter Password">
-                            Password
-                          </Input.Password>
-                        </Grid>
-                        <Grid xs={24}>
-                          <Button auto className="info-icon text-center" style={{ borderWidth: 0, justifyContent: "center", alignItems: "center" }}>
-                            <Spacer inline w={0.1} />
-                            Singup<Spacer w={0.5} /> <ArrowRight />
-                          </Button>
-                        </Grid>
-                      </Grid.Container>
+                    <Grid.Container gap={2} justify="center">
+                      <Grid xs={24}>
+                        <Text h3>Signup Form</Text>
+                      </Grid>
+                      <Grid xs={24}>
+                        <Input placeholder="Enter Name">
+                          Name
+                        </Input>
+                      </Grid><Grid xs={24}>
+                        <Input placeholder="Enter Username">
+                          Username
+                        </Input>
+                      </Grid>
+                      <Grid xs={24}>
+                        <Input.Password placeholder="Enter Password">
+                          Password
+                        </Input.Password>
+                      </Grid>
+                      <Grid xs={24}>
+                        <Input.Password placeholder="Re-Enter Password">
+                          Password
+                        </Input.Password>
+                      </Grid>
+                      <Grid xs={24}>
+                        <Button auto className="info-icon text-center" style={{ borderWidth: 0, justifyContent: "center", alignItems: "center" }}>
+                          <Spacer inline w={0.1} />
+                          Singup<Spacer w={0.5} /> <ArrowRight />
+                        </Button>
+                      </Grid>
+                    </Grid.Container>
                   </Tabs.Item>
                 </Tabs>
               </Card>
