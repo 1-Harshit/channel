@@ -1,5 +1,5 @@
 import { Card, Grid, Text, Spacer, Link, Description, Input, Button } from '@geist-ui/core';
-import { Send, Plus, ArrowRight, X } from "@geist-ui/icons";
+import { Send, Plus, ArrowRight, X, Trash2 } from "@geist-ui/icons";
 import Modal from 'react-modal';
 import React, { useState, useEffect, useRef } from 'react';
 
@@ -120,9 +120,27 @@ const InsideScreen = () => {
 				</Card>
 			</Grid>
 			<Grid xs height="100%" >
-				<Grid.Container gap={2} justify="center">
+				<Grid.Container gap={0.5} justify="center" direction="row">
+					<Grid xs={24}>
+						<Card style={{ border: "none" }} height="4px">
+						</Card>
+					</Grid>
+					<Grid xs={24}>
+						<Grid.Container gap={2} direction="column">
+							<Grid xs={22}>
+								<Card width="100%" height="10px" style={{ border: "none" }}>
+									<Description title={"description"} content={<b>Channel: {activeChannel.toUpperCase()}</b>} />
+								</Card>
+							</Grid>
+							<Grid xs style={{alignContent:"flex-end"}}>
+								<Button style={{ border: "none" }}>
+									<Trash2 />
+								</Button>
+							</Grid>
+						</Grid.Container>
+					</Grid>
 					<Grid xs={24} >
-						<Card shadow width="100%" height="600px" style={{ overflowY: "scroll" }}>
+						<Card shadow width="100%" height="590px" style={{ overflowY: "scroll" }}>
 							{messages.map((message, i) => {
 								const content = (
 									<Text p mt={0}>
