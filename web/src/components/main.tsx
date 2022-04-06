@@ -1,11 +1,16 @@
 import { Card, Grid, Text, Spacer, Link, Description, Input, Button } from '@geist-ui/core';
-import { Send } from "@geist-ui/icons";
+import { Send, Plus, ArrowRight, X } from "@geist-ui/icons";
+import Modal from 'react-modal';
 import React, { useState, useEffect, useRef } from 'react';
 
 const InsideScreen = () => {
 	const [activeChannel, setActiveChannel] = useState("general");
 	const messageEndRef = useRef<HTMLDivElement>(null);
+	const [modalIsOpen, setIsOpen] = React.useState(false);
 
+	const closeModal = () => {
+		setIsOpen(false);
+	}
 
 	const channels = ["general", "active", "bhuvan", "harshit", "pannel", "page", "crumbs", "expenses", "random", "micl"];
 	const [messages, setMessages] = useState([{ timeStamp: "Oct 01, 7:15 AM", name: "Harshit Raj", message: "Hey there!" },]);
@@ -41,16 +46,62 @@ const InsideScreen = () => {
 		}
 	}
 
+	const handleAddChannel = () => {
+		setIsOpen(true);
+	}
+
 	useEffect(() => {
 		handleScroll();
 	}, [messages])
 
 	return (
-		<Grid.Container gap={2} justify="flex-start" >
+		<Grid.Container gap={2} justify="center" >
+			<Modal
+				isOpen={modalIsOpen}
+				onRequestClose={closeModal}
+				contentLabel="Add Channel"
+			>
+				<Grid.Container gap={2} justify="center">
+					<Grid xs={10} />
+					<Grid xs>
+						<Grid.Container gap={2} justify="center">
+
+							<Grid xs={24}>
+								<Text h3>Add Channel</Text>
+							</Grid>
+							<Grid xs={24}>
+
+								<Input placeholder="Enter Channel name">
+									Channel Name
+								</Input>
+							</Grid>
+							<Grid xs={24}>
+								<Input placeholder="Enter Description">
+									Description
+								</Input>
+							</Grid>
+							<Grid xs={24}>
+								<Button auto className="info-icon text-center" style={{ borderWidth: 0, justifyContent: "center", alignItems: "center" }}>
+									<Spacer inline w={0.1} />
+									Create Channel<Spacer w={0.5} /> <ArrowRight />
+								</Button>
+								<Button auto className="info-icon text-center" style={{ borderWidth: 0, justifyContent: "center", alignItems: "center" }} onClick={closeModal}>
+									<Spacer inline w={0.1} />
+									Close<Spacer w={0.5} /> <X />
+								</Button>
+							</Grid>
+						</Grid.Container>
+					</Grid>
+					<Grid xs={5} />
+				</Grid.Container>
+
+			</Modal>
 			<Grid xs={3} />
 			<Grid xs={3} height="100%" alignContent="flex-end">
 				<Card width="100%" height="500px" paddingLeft="25%" style={{ borderWidth: 0 }}>
-					<Text style={{ color: "#888", letterSpacing: "1.3px", fontSize: "0.8125rem" }}>CHANNEL</Text>
+					<Text style={{ color: "#888", letterSpacing: "1.3px", fontSize: "0.8125rem" }}>
+						CHANNEL  <Plus onClick={handleAddChannel} fontSize="0.8rem" />
+					</Text>
 					<Spacer h={0.5} />
 					{channels.map((channel,) => {
 						return (
