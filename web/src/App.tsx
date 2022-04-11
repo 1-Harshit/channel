@@ -8,11 +8,11 @@ import GeneralScreen from './components/main';
 function App() {
   const theme = useTheme();
   const [themeType, setThemeType] = useState<string>();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      setIsAuthenticated(true);
+      setIsAuthenticated(false);
     }
   }, []);
 
@@ -36,7 +36,7 @@ function App() {
         {isAuthenticated ? (
           <GeneralScreen />
         ) : (
-          <AuthScreen />
+          <AuthScreen setIsAuthenticated={setIsAuthenticated} />
         )
         }
       </GeistProvider>
