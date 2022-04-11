@@ -7,7 +7,7 @@ type Message struct {
 	UserUsername string  `json:"sentByUsername"`
 	User         User    `gorm:"foreignkey:UserUsername" json:"-"`
 	ChannelName  string  `json:"channelName"`
-	Channel      Channel `gorm:"foreignkey:ChannelName" json:"-"`
+	Channel      Channel `gorm:"foreignkey:ChannelName;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"-"`
 }
 
 func CreateMessage(content string, timeSentAt int64, username string, channelId string) error {

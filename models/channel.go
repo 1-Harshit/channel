@@ -16,3 +16,9 @@ func GetAllChannels() ([]Channel, error) {
 	err := db.Find(&channels).Error
 	return channels, err
 }
+
+func DeleteChannel(name string) error {
+	channel := Channel{Name: name}
+	err := db.Delete(&channel).Error
+	return err
+}

@@ -25,6 +25,7 @@ func RegisterRoutes(router *mux.Router) {
 	// Channel
 	router.HandleFunc("/channel", middleware.IsAuthorized(controllers.CreateChannel)).Methods("POST")
 	router.HandleFunc("/channels", middleware.IsAuthorized(controllers.GetAllChannels)).Methods("GET")
+	router.HandleFunc("/channel/{channelId}", middleware.IsAuthorized(controllers.DeleteChannel)).Methods("DELETE")
 
 	// Message
 	router.HandleFunc("/channel/{channelId}/message", middleware.IsAuthorized(controllers.CreateMessage)).Methods("POST")

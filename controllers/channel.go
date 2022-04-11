@@ -6,6 +6,7 @@ import (
 
 	"github.com/1-Harshit/channel/models"
 	"github.com/1-Harshit/channel/utils"
+	"github.com/gorilla/mux"
 )
 
 type CreateChannelRequest struct {
@@ -45,4 +46,14 @@ func GetAllChannels(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 
+}
+
+func DeleteChannel(w http.ResponseWriter, r *http.Request) {
+	channelId := mux.Vars(r)["channelId"]
+	err := models.DeleteChannel(channelId)
+	if err != nil {
+		utils.RespondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	w.WriteHeader(http.StatusOK)
 }
