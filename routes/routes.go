@@ -19,6 +19,9 @@ func Setup() *mux.Router {
 
 func RegisterRoutes(router *mux.Router) {
 
+	// Hello World
+	router.HandleFunc("/", controllers.Index).Methods("GET")
+
 	// Channel
 	router.HandleFunc("/channel", middleware.IsAuthorized(controllers.CreateChannel)).Methods("POST")
 	router.HandleFunc("/channels", middleware.IsAuthorized(controllers.GetAllChannels)).Methods("GET")
