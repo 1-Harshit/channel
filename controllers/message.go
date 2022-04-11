@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/1-Harshit/channel/models"
@@ -40,7 +41,23 @@ func GetMessages(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	channelID := params["channelId"]
 
-	messages, err := models.GetMessages(channelID)
+	queryParams := r.URL.Query()
+	timeStamp := queryParams.Get("after_time")
+
+	if timeStamp == "" {
+		timeStamp = "0"
+	}
+
+	timeStampInt, err := strconv.ParseInt(timeStamp, 10, 64)
+	if err != nil {
+		utils.RespondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	var messages []models.Message
+
+	messages, err = models.GetMessages(channelID, timeStampInt)
+
 	if err != nil {
 		utils.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
