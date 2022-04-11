@@ -7,3 +7,6 @@ FRONTEND:
 
 JWT:
   SECRET: secret
+
+DATABASE:
+  NAME: db.sqlite

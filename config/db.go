@@ -11,6 +11,7 @@ var db *gorm.DB
 
 func ConnectDB() {
 	dataSource := viper.GetString("DATABASE.NAME")
+	log.Info("Connecting to database: ", viper.GetString("DATABASE.NAME"))
 	database, err := gorm.Open(sqlite.Open(dataSource), &gorm.Config{})
 	if err != nil {
 		log.Error("Error connecting to database: ", err)
