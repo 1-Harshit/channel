@@ -44,3 +44,13 @@ func ListAllUsers() ([]UserResponse, error) {
 
 	return userResponses, err
 }
+
+func GetUser(username string) (*UserResponse, error) {
+	var user User
+	err := db.Where("username = ?", username).First(&user).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &UserResponse{Username: user.Username, Name: user.Name}, nil
+}

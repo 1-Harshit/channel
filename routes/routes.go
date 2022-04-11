@@ -34,4 +34,5 @@ func RegisterRoutes(router *mux.Router) {
 	router.HandleFunc("/user/login", controllers.Login).Methods("POST")
 	router.HandleFunc("/user/signup", controllers.Signup).Methods("POST")
 	router.HandleFunc("/users", middleware.IsAuthorized(controllers.ListAllUsers)).Methods("GET")
+	router.HandleFunc("/user/{userId}", middleware.IsAuthorized(controllers.GetUser)).Methods("GET")
 }
