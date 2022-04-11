@@ -18,6 +18,10 @@ func ConnectDB() {
 		panic(err)
 	}
 	db = database
+
+	if res := db.Exec("PRAGMA foreign_keys = ON", nil); res.Error != nil {
+		panic(res.Error)
+	}
 }
 
 func GetDB() *gorm.DB {
