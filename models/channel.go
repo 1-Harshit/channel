@@ -1,8 +1,7 @@
 package models
 
 type Channel struct {
-	ID          uint   `gorm:"primary_key" json:"id"`
-	Name        string `json:"name"`
+	Name        string `gorm:"primary_key" json:"name"`
 	Description string `json:"description"`
 }
 
