@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"github.com/1-Harshit/channel/models"
 	"github.com/1-Harshit/channel/utils"
@@ -10,14 +11,13 @@ import (
 )
 
 type CreateMessageRequest struct {
-	Content    string `json:"content"`
-	TimeSentAt string `json:"sentAt"`
+	Content string `json:"content"`
 }
 
 func CreateMessage(w http.ResponseWriter, r *http.Request) {
 	username := r.Header.Get("username")
 	params := mux.Vars(r)
-	channelID := params["channelID"]
+	channelID := params["channelId"]
 	createMessageRequest := &CreateMessageRequest{}
 	err := utils.ParseBody(r, createMessageRequest)
 	if err != nil {
@@ -25,7 +25,9 @@ func CreateMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = models.CreateMessage(createMessageRequest.Content, createMessageRequest.TimeSentAt, username, channelID)
+	timeSentAt := time.Now().UnixMilli()
+
+	err = models.CreateMessage(createMessageRequest.Content, timeSentAt, username, channelID)
 	if err != nil {
 		utils.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
@@ -36,7 +38,7 @@ func CreateMessage(w http.ResponseWriter, r *http.Request) {
 
 func GetMessages(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	channelID := params["channelID"]
+	channelID := params["channelId"]
 
 	messages, err := models.GetMessages(channelID)
 	if err != nil {
