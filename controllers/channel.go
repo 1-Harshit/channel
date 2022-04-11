@@ -21,8 +21,8 @@ func CreateChannel(w http.ResponseWriter, r *http.Request) {
 		utils.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
-
-	err = models.CreateChannel(createChannelRequest.Name, createChannelRequest.Description)
+	username := r.Header.Get("username")
+	err = models.CreateChannel(createChannelRequest.Name, createChannelRequest.Description, username)
 	if err != nil {
 		utils.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
