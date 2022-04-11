@@ -5,7 +5,7 @@ type Message struct {
 	Content      string  `json:"content"`
 	TimeSentAt   int64   `json:"sentAt"`
 	UserUsername string  `json:"sentByUsername"`
-	User         User    `gorm:"foreignkey:UserUsername" json:"-"`
+	User         User    `gorm:"foreignkey:UserUsername;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"-"`
 	ChannelName  string  `json:"channelName"`
 	Channel      Channel `gorm:"foreignkey:ChannelName;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"-"`
 }
