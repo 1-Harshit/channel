@@ -1,16 +1,21 @@
 package models
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 type User struct {
-	Username string `gorm:"primary_key" json:"username"`
-	Password string `json:"password"`
-	Name     string `json:"name"`
+	Username    string `gorm:"primary_key" json:"username"`
+	Password    string `json:"password"`
+	Name        string `json:"name"`
+	LastLoginAt int64  `json:"lastLoginAt"`
 }
 
 type UserResponse struct {
-	Username string `json:"username"`
-	Name     string `json:"name"`
+	Username    string `json:"username"`
+	Name        string `json:"name"`
+	LastLoginAt int64  `json:"lastLoginAt"`
 }
 
 func Signup(username string, password string, name string) error {
@@ -30,6 +35,14 @@ func Login(username string, password string) error {
 		return fmt.Errorf("incorrect password")
 	}
 
+	timeNow := time.Now().UnixMilli()
+
+	user.LastLoginAt = timeNow
+	err = db.Save(&user).Error
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -39,7 +52,7 @@ func ListAllUsers() ([]UserResponse, error) {
 
 	var userResponses []UserResponse
 	for _, user := range users {
-		userResponses = append(userResponses, UserResponse{Username: user.Username, Name: user.Name})
+		userResponses = append(userResponses, UserResponse{Username: user.Username, Name: user.Name, LastLoginAt: user.LastLoginAt})
 	}
 
 	return userResponses, err
