@@ -15,9 +15,11 @@ type LoginRequest struct {
 }
 
 type SignupRequest struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-	Name     string `json:"name"`
+	Username    string `json:"username"`
+	Password    string `json:"password"`
+	Name        string `json:"name"`
+	PhoneNo     string `json:"phoneNo"`
+	Designation string `json:"designation"`
 }
 
 type JWTResponse struct {
@@ -66,7 +68,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = models.Signup(signupRequest.Username, signupRequest.Password, signupRequest.Name)
+	err = models.Signup(signupRequest.Username, signupRequest.Password, signupRequest.Name, signupRequest.PhoneNo, signupRequest.Designation)
 	if err != nil {
 		utils.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
