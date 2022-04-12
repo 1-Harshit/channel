@@ -3,12 +3,13 @@ import { Send, Plus, ArrowRight, X, Trash2 } from "@geist-ui/icons";
 import React, { useState, useEffect, useRef } from 'react';
 import { getChannels } from '../api/callbacks';
 import People from './People';
+import Channel from './Channel';
 
 const InsideScreen = () => {
 	const [activeChannel, setActiveChannel] = useState("general");
 	const messageEndRef = useRef<HTMLDivElement>(null);
 	const [modalIsOpen, setIsOpen] = React.useState(false);
-	const [showPeople, setShowPeople] = useState(false);
+	const [tab, setTab] = useState('c');
 
 	const closeModal = () => {
 		setIsOpen(false);
@@ -57,7 +58,7 @@ const InsideScreen = () => {
 					<Description title={"description"} content={<b>Channel: {activeChannel.toUpperCase()}</b>} />
 				</Card>
 			</Grid>
-			<Grid xs style={{ alignContent: "flex-end" }}>
+			<Grid xs style={{ alignItems: "center", justifyContent: "flex-end", verticalAlign: "center" }}>
 				<Button style={{ border: "none" }}>
 					<Trash2 />
 				</Button>
@@ -95,7 +96,6 @@ const InsideScreen = () => {
 						<Button auto className="info-icon text-center" style={{ borderWidth: 0, justifyContent: "center", alignItems: "center" }}>
 							<Spacer inline w={0.1} />
 							<Send />
-
 						</Button>
 					</Grid>
 				</Grid.Container>
@@ -103,12 +103,12 @@ const InsideScreen = () => {
 		</Grid></>);
 
 	const sidebar = <Card width="100%" height="500px" paddingLeft="25%" style={{ borderWidth: 0 }}>
-		<Text style={{ color: "#888", letterSpacing: "1.5px", fontSize: "0.8125rem", cursor: "pointer" }} onClick={() => { setShowPeople(false); }}>
+		<Text style={{ color: "#888", letterSpacing: "1.5px", fontSize: "0.8125rem", cursor: "pointer" }} onClick={() => { setTab("c"); }}>
 			CHANNEL  <Plus onClick={handleAddChannel} fontSize="0.8rem" />
 		</Text>
 		<Spacer h={0.5} />
 
-		<Text style={{ color: "#333", letterSpacing: "1.5px", fontSize: "1rem", cursor: "pointer" }} onClick={() => { setShowPeople(true); }}>
+		<Text style={{ color: "#333", letterSpacing: "1.5px", fontSize: "1rem", cursor: "pointer" }} onClick={() => { setTab("p"); }}>
 			People
 		</Text>
 		<Spacer h={0.5} />
@@ -118,7 +118,7 @@ const InsideScreen = () => {
 				<>
 					<Link
 						href={"/#" + channel}
-						onClick={() => { setShowPeople(false); setActiveChannel(channel); }}
+						onClick={() => { setTab("m"); setActiveChannel(channel); }}
 						color={activeChannel === channel}
 					>
 						# {channel}
@@ -163,11 +163,10 @@ const InsideScreen = () => {
 						<Card style={{ border: "none" }} height="4px">
 						</Card>
 					</Grid>
-					{showPeople ? <People /> : messagePane}
+					{tab === "p" ? <People /> : tab === "c" ? <Channel /> : messagePane}
 				</Grid.Container>
 			</Grid>
 			<Grid xs={4} />
-
 		</Grid.Container >
 	);
 }

@@ -7,20 +7,13 @@ import GeneralScreen from './components/main';
 
 function App() {
   const theme = useTheme();
-  const [themeType, setThemeType] = useState<string>();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      setIsAuthenticated(false);
+    if (localStorage.getItem("token") != null) {
+      setIsAuthenticated(true);
     }
   }, []);
-
-  useEffect(() => {
-    const theme = window.localStorage.getItem('theme')
-    if (theme !== 'dark') return
-    setThemeType('dark')
-  }, [])
 
   const useDomClean = (): void => {
     useEffect(() => {
@@ -31,7 +24,7 @@ function App() {
   useDomClean()
   return (
     <>
-      <GeistProvider themeType={themeType} themes={[theme]}>
+      <GeistProvider themes={[theme]}>
         <CssBaseline />
         {isAuthenticated ? (
           <GeneralScreen />
