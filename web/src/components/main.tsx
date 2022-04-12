@@ -1,6 +1,7 @@
 import { Card, Grid, Text, Spacer, Link, Description, Input, Button, Modal } from '@geist-ui/core';
 import { Send, Plus, ArrowRight, X, Trash2 } from "@geist-ui/icons";
 import React, { useState, useEffect, useRef } from 'react';
+import { getChannels } from '../api/callbacks';
 import People from './People';
 
 const InsideScreen = () => {
@@ -13,30 +14,8 @@ const InsideScreen = () => {
 		setIsOpen(false);
 	}
 
-	const [channels, setChannels] = useState(["general", "active", "bhuvan", "harshit", "pannel", "page", "crumbs", "expenses", "random", "micl"]);
+	const [channels, setChannels] = useState(["general", "active"]);
 	const [messages, setMessages] = useState([{ timeStamp: "Oct 01, 7:15 AM", name: "Harshit Raj", message: "Hey there!" },]);
-
-	const dummymessages = () => setTimeout(() => {
-		setMessages([
-			{ timeStamp: "Oct 01, 7:15 AM", name: "Harshit Raj", message: "Hey there!" },
-			{ timeStamp: "Oct 01, 7:17 AM", name: "Harshit Raj 2", message: "Heyyyy!" },
-			{ timeStamp: "Oct 01, 7:17 AM", name: "Harshit Raj 2", message: "Sup?" },
-			{ timeStamp: "Oct 01, 7:18 AM", name: "Harshit Raj", message: "ntng" },
-			{ timeStamp: "Oct 01, 7:19 AM", name: "Harshit Raj", message: "Byeee" },
-			{ timeStamp: "Oct 01, 7:15 AM", name: "Harshit Raj", message: "Hey there!" },
-			{ timeStamp: "Oct 01, 7:17 AM", name: "Harshit Raj 2", message: "Heyyyy!" },
-			{ timeStamp: "Oct 01, 7:17 AM", name: "Harshit Raj 2", message: "Sup?" },
-			{ timeStamp: "Oct 01, 7:18 AM", name: "Harshit Raj", message: "ntng" },
-			{ timeStamp: "Oct 01, 7:19 AM", name: "Harshit Raj", message: "Byeee" },
-			{ timeStamp: "Oct 01, 7:15 AM", name: "Harshit Raj", message: "Hey there!" },
-			{ timeStamp: "Oct 01, 7:17 AM", name: "Harshit Raj 2", message: "Heyyyy!" },
-			{ timeStamp: "Oct 01, 7:17 AM", name: "Harshit Raj 2", message: "Sup?" },
-			{ timeStamp: "Oct 01, 7:18 AM", name: "Harshit Raj", message: "ntng" },
-			{ timeStamp: "Oct 01, 7:19 AM", name: "Harshit Raj", message: "Byeee" },
-		]);
-	}, 1000); // Simulate network latency
-
-	dummymessages();
 
 	const handleScroll = () => {
 		if (messageEndRef.current?.scrollIntoView) {
@@ -57,12 +36,18 @@ const InsideScreen = () => {
 	}
 
 	useEffect(() => {
+
+		getChannels().then((res) => {
+			console.log(res.Payload)
+		})
+
+	});
+
+	useEffect(() => {
 		handleScroll();
 	}, [messages])
 
 	useEffect(() => {
-		setMessages([{ timeStamp: "Oct 01, 7:15 AM", name: "Harshit Raj", message: "Hey there!" }]);
-		dummymessages();
 	}, [activeChannel]);
 
 	const messagePane = (<><Grid xs={24}>
@@ -118,12 +103,12 @@ const InsideScreen = () => {
 		</Grid></>);
 
 	const sidebar = <Card width="100%" height="500px" paddingLeft="25%" style={{ borderWidth: 0 }}>
-		<Text style={{ color: "#888", letterSpacing: "1.5px", fontSize: "0.8125rem", cursor: "pointer" }} onClick={() => { setShowPeople(false); } }>
+		<Text style={{ color: "#888", letterSpacing: "1.5px", fontSize: "0.8125rem", cursor: "pointer" }} onClick={() => { setShowPeople(false); }}>
 			CHANNEL  <Plus onClick={handleAddChannel} fontSize="0.8rem" />
 		</Text>
 		<Spacer h={0.5} />
 
-		<Text style={{ color: "#333", letterSpacing: "1.5px", fontSize: "1rem", cursor: "pointer" }} onClick={() => { setShowPeople(true); } }>
+		<Text style={{ color: "#333", letterSpacing: "1.5px", fontSize: "1rem", cursor: "pointer" }} onClick={() => { setShowPeople(true); }}>
 			People
 		</Text>
 		<Spacer h={0.5} />
@@ -133,7 +118,7 @@ const InsideScreen = () => {
 				<>
 					<Link
 						href={"/#" + channel}
-						onClick={() => { setShowPeople(false); setActiveChannel(channel); } }
+						onClick={() => { setShowPeople(false); setActiveChannel(channel); }}
 						color={activeChannel === channel}
 					>
 						# {channel}

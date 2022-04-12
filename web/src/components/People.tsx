@@ -1,13 +1,14 @@
-import { Card, Grid, Text, Spacer, Link, Description, Input, Button, Image } from '@geist-ui/core';
-import { Send, Plus, ArrowRight, X, Trash2 } from "@geist-ui/icons";
-import React, { useState, useEffect, useRef } from 'react';
+import { Card, Grid, Spacer, Description, Image } from '@geist-ui/core';
+import { useState } from 'react';
 
 const People = () => {
 	const [people, setPeople] = useState([{ username: "username", name: "name" }, { username: "username", name: "name" }, { username: "username", name: "name" }, { username: "username", name: "name" }]);
-	
+
 	const userModal = (username: string) => {
 
 	}
+
+	
 	return (<>
 		<Card width="100%">
 			<Description title={"List of people registered with Channel"} content={<b>People using Channel</b>} />

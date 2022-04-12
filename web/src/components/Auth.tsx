@@ -121,13 +121,14 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 									</Input.Password>
 								</Grid>
 								<Grid xs={24}>
-									<Input.Password placeholder="Phone Number" onChange={(e) => { setphone(e.target.value) }}>
+									<Input placeholder="Phone Number" onChange={(e) => { setphone(e.target.value) }}>
 										Phone Number
-									</Input.Password>
-								</Grid><Grid xs={24}>
-									<Input.Password placeholder="Designation" onChange={(e) => { setdesign(e.target.value) }}>
+									</Input>
+								</Grid>
+								<Grid xs={24}>
+									<Input placeholder="Designation" onChange={(e) => { setdesign(e.target.value) }}>
 										Designation
-									</Input.Password>
+									</Input>
 								</Grid>
 								<Grid xs={24}>
 									<Button
@@ -145,7 +146,7 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 					</Tabs>
 				</Card>
 			</Grid>
-		</Grid.Container>
+		</Grid.Container >
 	);
 };
 

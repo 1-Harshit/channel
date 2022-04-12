@@ -9,7 +9,7 @@ export interface SignupParams {
   Name: string;
   Username: string;
   Password: string;
-  PhoneNo:  string;
+  PhoneNo: string;
   Designation: string;
 }
 
@@ -119,9 +119,11 @@ const getChannels = async (): Promise<Response> => {
     .get(BASE_URL + "/channels", config)
     .then((res) => {
       payload = res.data;
+      console.log(payload);
       status = res.status;
     })
     .catch((err) => {
+      console.log(err.message);
       payload = err?.response?.data.error ?? ERROR_MESSAGE;
       status = err?.response?.status ?? 500;
     });
@@ -171,7 +173,11 @@ const postMessage = async (message: MessageParams): Promise<Response> => {
 
   let status, payload;
   await axios
-    .post(BASE_URL + `channel/${message.ChannelId}/message`, bodyParameters, config)
+    .post(
+      BASE_URL + `channel/${message.ChannelId}/message`,
+      bodyParameters,
+      config
+    )
     .then((res) => {
       payload = res.data;
       status = res.status;
