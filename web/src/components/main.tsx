@@ -9,10 +9,14 @@ const InsideScreen = () => {
 	const [activeChannel, setActiveChannel] = useState({ description: "General Conversation", name: "general", createdAt: 1649745585, createdBy: "Harshit" });
 	const messageEndRef = useRef<HTMLDivElement>(null);
 	const [modalIsOpen, setIsOpen] = React.useState(false);
+	const [modalIsOpen1, setModalIsOpen1] = React.useState(false);
 	const [tab, setTab] = useState('c');
 
 	const closeModal = () => {
 		setIsOpen(false);
+	}
+	const closeModal1 = () => {
+		setModalIsOpen1(false);
 	}
 
 	const [channels, setChannels] = useState([
@@ -31,7 +35,7 @@ const InsideScreen = () => {
 		{ timeStamp: "Apr 10, 8:20 PM", name: "Harshit Raj", message: "Treat at CCD?" },
 		{ timeStamp: "Apr 10, 8:21 PM", name: "Bhuvan Singla", message: "NO!" },
 		{ timeStamp: "Apr 10, 8:22 PM", name: "Harshit Raj", message: "Okie Bye!" },
-		{ timeStamp: "Apr 10, 8:23 PM", name: "Bhuvan Singla", message: "BYEE!" },
+		{ timeStamp: "Apr 10, 8:23 PM", name: "Bhuvan Singla", message: "bye." },
 	]);
 
 	const handleScroll = () => {
@@ -75,7 +79,7 @@ const InsideScreen = () => {
 				</Card>
 			</Grid>
 			<Grid xs style={{ alignItems: "center", justifyContent: "flex-end", verticalAlign: "center" }}>
-				<Button style={{ border: "none" }}>
+				<Button style={{ border: "none" }} onClick={() => { setModalIsOpen1(true); }}>
 					<Trash2 />
 				</Button>
 			</Grid>
@@ -167,6 +171,25 @@ const InsideScreen = () => {
 				<Modal.Action onClick={addChannel}>
 					<Spacer inline w={0.1} />
 					Create Channel<Spacer w={0.5} /> <ArrowRight />
+				</Modal.Action>
+
+			</Modal>
+			<Modal
+				visible={modalIsOpen1}
+				onClose={closeModal1}
+			>
+				<Modal.Title>Delete Channel</Modal.Title>
+				<div style={{ alignContent: "flex-start", alignItems: "flex-start", textAlign: "start" }}>
+					<b>Are your sure you want to delete cahnnel {activeChannel.name}?</b> <br />
+					<small>
+						Note: ALL messages will be deleted permanently.
+					</small>
+				</div>
+				<Modal.Action onClick={closeModal1}>
+					Close
+				</Modal.Action>
+				<Modal.Action passive onClick={addChannel}>
+					Yes delete!
 				</Modal.Action>
 
 			</Modal>
