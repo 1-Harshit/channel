@@ -12,6 +12,8 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 	const [password, setPassword] = useState("");
 	const [password1, setPassword1] = useState("");
 	const [name, setName] = useState("");
+	const [phone, setphone] = useState("");
+	const [design, setdesign] = useState("");
 
 	const handleLogin = () => {
 		if (!username || !password) {
@@ -47,6 +49,8 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 			Name: name,
 			Username: username,
 			Password: password,
+			PhoneNo: phone,
+			Designation: design
 		}
 
 		postSignup(params).then((res) => {
@@ -114,6 +118,15 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 								<Grid xs={24}>
 									<Input.Password placeholder="Re-Enter Password" onChange={(e) => { setPassword1(e.target.value) }}>
 										Password
+									</Input.Password>
+								</Grid>
+								<Grid xs={24}>
+									<Input.Password placeholder="Phone Number" onChange={(e) => { setphone(e.target.value) }}>
+										Phone Number
+									</Input.Password>
+								</Grid><Grid xs={24}>
+									<Input.Password placeholder="Designation" onChange={(e) => { setdesign(e.target.value) }}>
+										Designation
 									</Input.Password>
 								</Grid>
 								<Grid xs={24}>

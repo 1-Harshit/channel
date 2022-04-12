@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 
-const BASE_URL = "SOMETHING";
+const BASE_URL = "http://localhost:8080";
 const ERROR_MESSAGE = "Error in API Call";
 
 // Interfaces
@@ -9,6 +9,8 @@ export interface SignupParams {
   Name: string;
   Username: string;
   Password: string;
+  PhoneNo:  string;
+  Designation: string;
 }
 
 export interface LoginParams {
