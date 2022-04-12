@@ -20,7 +20,7 @@ func Setup() *mux.Router {
 func RegisterRoutes(router *mux.Router) {
 
 	// Hello World
-	router.HandleFunc("/", controllers.Index).Methods("GET")
+	// router.HandleFunc("/", controllers.Index).Methods("GET")
 
 	// Channel
 	router.HandleFunc("/channel", middleware.CORS(middleware.IsAuthorized(controllers.CreateChannel))).Methods("POST")

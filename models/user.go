@@ -12,6 +12,7 @@ type User struct {
 	LastLoginAt int64  `json:"lastLoginAt"`
 	PhoneNo     string `json:"phoneNo"`
 	Designation string `json:"designation"`
+	AvatarURL   string `json:"avatarURL"`
 }
 
 type UserResponse struct {
@@ -20,10 +21,11 @@ type UserResponse struct {
 	LastLoginAt int64  `json:"lastLoginAt"`
 	PhoneNo     string `json:"phoneNo"`
 	Designation string `json:"designation"`
+	AvatarURL   string `json:"avatarURL"`
 }
 
-func Signup(username string, password string, name string, phoneNo string, designation string) error {
-	user := User{Username: username, Password: password, Name: name, LastLoginAt: time.Now().Unix(), PhoneNo: phoneNo, Designation: designation}
+func Signup(username string, password string, name string, phoneNo string, designation string, avatarURL string) error {
+	user := User{Username: username, Password: password, Name: name, LastLoginAt: time.Now().Unix(), PhoneNo: phoneNo, Designation: designation, AvatarURL: avatarURL}
 	err := db.Create(&user).Error
 	return err
 }
@@ -62,6 +64,7 @@ func ListAllUsers() ([]UserResponse, error) {
 			LastLoginAt: user.LastLoginAt,
 			PhoneNo:     user.PhoneNo,
 			Designation: user.Designation,
+			AvatarURL:   user.AvatarURL,
 		})
 	}
 
@@ -75,5 +78,12 @@ func GetUser(username string) (*UserResponse, error) {
 		return nil, err
 	}
 
-	return &UserResponse{Username: user.Username, Name: user.Name}, nil
+	return &UserResponse{
+		Username:    user.Username,
+		Name:        user.Name,
+		LastLoginAt: user.LastLoginAt,
+		PhoneNo:     user.PhoneNo,
+		Designation: user.Designation,
+		AvatarURL:   user.AvatarURL,
+	}, nil
 }
