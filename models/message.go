@@ -3,10 +3,10 @@ package models
 type Message struct {
 	ID           uint    `gorm:"primary_key" json:"id"`
 	Content      string  `json:"content"`
-	TimeSentAt   int64   `json:"sentAt"`
+	TimeSentAt   int64   `json:"sentAt" gorm:"index:idx_time_sent_at"`
 	UserUsername string  `json:"sentByUsername"`
 	User         User    `gorm:"foreignkey:UserUsername;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"-"`
-	ChannelName  string  `json:"channelName"`
+	ChannelName  string  `json:"channelName" gorm:"index:idx_channel_name"`
 	Channel      Channel `gorm:"foreignkey:ChannelName;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"-"`
 }
 
