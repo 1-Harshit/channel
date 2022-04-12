@@ -26,7 +26,7 @@ func CreateMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	timeSentAt := time.Now().UnixMilli()
+	timeSentAt := time.Now().Unix()
 
 	err = models.CreateMessage(createMessageRequest.Content, timeSentAt, username, channelID)
 	if err != nil {

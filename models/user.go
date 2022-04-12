@@ -23,7 +23,7 @@ type UserResponse struct {
 }
 
 func Signup(username string, password string, name string, phoneNo string, designation string) error {
-	user := User{Username: username, Password: password, Name: name, LastLoginAt: time.Now().UnixMilli(), PhoneNo: phoneNo, Designation: designation}
+	user := User{Username: username, Password: password, Name: name, LastLoginAt: time.Now().Unix(), PhoneNo: phoneNo, Designation: designation}
 	err := db.Create(&user).Error
 	return err
 }
@@ -39,7 +39,7 @@ func Login(username string, password string) error {
 		return fmt.Errorf("incorrect password")
 	}
 
-	timeNow := time.Now().UnixMilli()
+	timeNow := time.Now().Unix()
 
 	user.LastLoginAt = timeNow
 	err = db.Save(&user).Error

@@ -11,7 +11,7 @@ type Channel struct {
 }
 
 func CreateChannel(name string, description string, username string) error {
-	time := time.Now().UnixMilli()
+	time := time.Now().Unix()
 	channel := Channel{Name: name, Description: description, CreatedAt: time, UserUsername: username}
 	err := db.Create(&channel).Error
 	return err
