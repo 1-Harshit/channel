@@ -63,14 +63,14 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 	return (
 		<Grid.Container gap={2} justify="center">
 			<Grid xs={12}>
-				<Card shadow width="100%" height="700px">
-					<Text type="secondary" h2 className="center" width="100%">
+				<Card shadow width="100%" height="800px" style={{ borderWidth: 0 }}>
+					<Text type="secondary" h2 className="center" width="100%" style={{ borderWidth: 0, justifyContent: "center", alignItems: "center", textAlign: "center" }} >
 						Channel Login/Signup
 					</Text>
 					<Tabs initialValue="1" align="center" leftSpace={0}>
 						<Tabs.Item label={<>Login Form</>} value="1">
-							<Grid.Container gap={2} justify="center">
-								<Grid xs={24}>
+							<Grid.Container gap={2} style={{ alignContent: "flex-start", alignItems: "flex-start", textAlign: "start" }}>
+								<Grid xs={24} width="100%">
 									<Text h3>Login Form</Text>
 								</Grid>
 								<Grid xs={24}>
