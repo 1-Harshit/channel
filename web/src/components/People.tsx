@@ -41,7 +41,7 @@ const People = () => {
 			style={{ alignContent: "flex-start", alignItems: "flex-start" }}
 		>
 			<Modal.Title>
-				Channel view
+				User view
 			</Modal.Title>
 			<div style={{ alignContent: "flex-start", alignItems: "flex-start", textAlign: "start" }}>
 				<Image src={channel.avatar}></Image>

@@ -6,7 +6,7 @@ import People from './People';
 import Channel from './Channel';
 
 const InsideScreen = () => {
-	const [activeChannel, setActiveChannel] = useState("general");
+	const [activeChannel, setActiveChannel] = useState({ description: "General Conversation", name: "general", createdAt: 1649745585, createdBy: "Harshit" });
 	const messageEndRef = useRef<HTMLDivElement>(null);
 	const [modalIsOpen, setIsOpen] = React.useState(false);
 	const [tab, setTab] = useState('c');
@@ -15,8 +15,24 @@ const InsideScreen = () => {
 		setIsOpen(false);
 	}
 
-	const [channels, setChannels] = useState(["general", "active"]);
-	const [messages, setMessages] = useState([{ timeStamp: "Oct 01, 7:15 AM", name: "Harshit Raj", message: "Hey there!" },]);
+	const [channels, setChannels] = useState([
+		{ description: "General Conversation", name: "general", createdAt: 1649745585, createdBy: "Harshit" },
+		{ description: "General Techy Stuff", name: "tech", createdAt: 1649748900, createdBy: "Harshit" },
+		{ description: "Random Chit Chat", name: "chit-chat", createdAt: 1649747600, createdBy: "Bhuvan" },
+		{ description: "Water Cooler", name: "water-ciiker", createdAt: 1649743900, createdBy: "Harshit" },
+	]);
+	const [messages, setMessages] = useState([
+		{ timeStamp: "Oct 01, 7:15 AM", name: "Harshit Raj", message: "Hey there!" },
+		{ timeStamp: "Apr 10, 8:15 PM", name: "Bhuvan Singla", message: "Hola" },
+		{ timeStamp: "Apr 10, 8:17 PM", name: "Harshit Raj", message: "Nice portal!" },
+		{ timeStamp: "Apr 10, 8:17 PM", name: "Bhuvan Singla", message: "Indeed" },
+		{ timeStamp: "Apr 10, 8:18 PM", name: "Harshit Raj", message: "Should add this in report now!" },
+		{ timeStamp: "Apr 10, 8:19 PM", name: "Bhuvan Singla", message: "Sure!" },
+		{ timeStamp: "Apr 10, 8:20 PM", name: "Harshit Raj", message: "Treat at CCD?" },
+		{ timeStamp: "Apr 10, 8:21 PM", name: "Bhuvan Singla", message: "NO!" },
+		{ timeStamp: "Apr 10, 8:22 PM", name: "Harshit Raj", message: "Okie Bye!" },
+		{ timeStamp: "Apr 10, 8:23 PM", name: "Bhuvan Singla", message: "BYEE!" },
+	]);
 
 	const handleScroll = () => {
 		if (messageEndRef.current?.scrollIntoView) {
@@ -55,7 +71,7 @@ const InsideScreen = () => {
 		<Grid.Container gap={2} direction="column">
 			<Grid xs={22}>
 				<Card width="100%" height="10px" style={{ border: "none" }}>
-					<Description title={"description"} content={<b>Channel: {activeChannel.toUpperCase()}</b>} />
+					<Description title={activeChannel.description} content={<b>Channel: {activeChannel.name.toUpperCase()}</b>} />
 				</Card>
 			</Grid>
 			<Grid xs style={{ alignItems: "center", justifyContent: "flex-end", verticalAlign: "center" }}>
@@ -117,11 +133,11 @@ const InsideScreen = () => {
 			return (
 				<>
 					<Link
-						href={"/#" + channel}
+						href={"/#" + channel.name}
 						onClick={() => { setTab("m"); setActiveChannel(channel); }}
-						color={activeChannel === channel}
+						color={activeChannel.name === channel.name}
 					>
-						# {channel}
+						# {channel.name}
 					</Link>
 					<Spacer h={0.2} />
 				</>
@@ -135,14 +151,15 @@ const InsideScreen = () => {
 				onClose={closeModal}
 			>
 				<Modal.Title>Add Channel</Modal.Title>
-
-				<Input width="100%" placeholder="Enter Channel name">
-					Channel Name
-				</Input>
-				<Spacer />
-				<Input width="100%" placeholder="Enter Description">
-					Description
-				</Input>
+				<div style={{ alignContent: "flex-start", alignItems: "flex-start", textAlign: "start" }}>
+					<Input width="100%" placeholder="Enter Channel name">
+						Channel Name
+					</Input>
+					<Spacer />
+					<Input width="100%" placeholder="Enter Description">
+						Description
+					</Input>
+				</div>
 				<Modal.Action passive onClick={closeModal}>
 					<Spacer inline w={0.1} />
 					Close<Spacer w={0.5} /> <X />
