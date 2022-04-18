@@ -21,10 +21,11 @@ func GetServerConfig() (string, string, string) {
 }
 
 func GetHandlerWithCORS(router *mux.Router) http.Handler {
-	frontedURL := viper.GetString("FRONTEND.URL")
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{frontedURL},
+		AllowedOrigins:   []string{"*"},
 		AllowCredentials: true,
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 	})
 	handler := c.Handler(router)
 	return handler
