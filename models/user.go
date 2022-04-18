@@ -6,22 +6,24 @@ import (
 )
 
 type User struct {
-	Username    string `gorm:"primary_key" json:"username"`
-	Password    string `json:"password"`
-	Name        string `json:"name"`
-	LastLoginAt int64  `json:"lastLoginAt"`
-	PhoneNo     string `json:"phoneNo"`
-	Designation string `json:"designation"`
-	AvatarURL   string `json:"avatarURL"`
+	Username         string    `gorm:"primary_key" json:"username"`
+	Password         string    `json:"password"`
+	Name             string    `json:"name"`
+	LastLoginAt      int64     `json:"lastLoginAt"`
+	PhoneNo          string    `json:"phoneNo"`
+	Designation      string    `json:"designation"`
+	AvatarURL        string    `json:"avatarURL"`
+	ChannelsMemberOf []Channel `gorm:"many2many:channel_users;" json:"channels"`
 }
 
 type UserResponse struct {
-	Username    string `json:"username"`
-	Name        string `json:"name"`
-	LastLoginAt int64  `json:"lastLoginAt"`
-	PhoneNo     string `json:"phoneNo"`
-	Designation string `json:"designation"`
-	AvatarURL   string `json:"avatarURL"`
+	Username         string    `json:"username"`
+	Name             string    `json:"name"`
+	LastLoginAt      int64     `json:"lastLoginAt"`
+	PhoneNo          string    `json:"phoneNo"`
+	Designation      string    `json:"designation"`
+	AvatarURL        string    `json:"avatarURL"`
+	ChannelsMemberOf []Channel `json:"channels"`
 }
 
 func Signup(username string, password string, name string, phoneNo string, designation string, avatarURL string) error {
@@ -85,5 +87,12 @@ func GetUser(username string) (*UserResponse, error) {
 		PhoneNo:     user.PhoneNo,
 		Designation: user.Designation,
 		AvatarURL:   user.AvatarURL,
+		// ChannelsMemberOf: user.ChannelsMemberOf,
 	}, nil
+}
+
+func GetUserChannels(username string) ([]Channel, error) {
+	var channels []Channel
+	err := db.Model(&User{Username: username}).Association("ChannelsMemberOf").Find(&channels)
+	return channels, err
 }

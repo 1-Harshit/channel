@@ -26,6 +26,10 @@ func RegisterRoutes(router *mux.Router) {
 	router.HandleFunc("/channel", middleware.CORS(middleware.IsAuthorized(controllers.CreateChannel))).Methods("POST")
 	router.HandleFunc("/channels", middleware.CORS(middleware.IsAuthorized(controllers.GetAllChannels))).Methods("GET")
 	router.HandleFunc("/channel/{channelId}", middleware.CORS(middleware.IsAuthorized(controllers.DeleteChannel))).Methods("DELETE")
+	router.HandleFunc("/channel/{channelId}/membership", middleware.CORS(middleware.IsAuthorized(controllers.JoinChannel))).Methods("POST")
+	router.HandleFunc("/channel/{channelId}/membership", middleware.CORS(middleware.IsAuthorized(controllers.LeaveChannel))).Methods("DELETE")
+	router.HandleFunc("/channel/{channelId}/membership", middleware.CORS(middleware.IsAuthorized(controllers.IsMemberOfChannel))).Methods("GET")
+	router.HandleFunc("/channel/{channelId}/members", middleware.CORS(middleware.IsAuthorized(controllers.GetChannelMembers))).Methods("GET")
 
 	// Message
 	router.HandleFunc("/channel/{channelId}/message", middleware.CORS(middleware.IsAuthorized(controllers.CreateMessage))).Methods("POST")
@@ -36,4 +40,5 @@ func RegisterRoutes(router *mux.Router) {
 	router.HandleFunc("/user/signup", middleware.CORS(controllers.Signup)).Methods("POST")
 	router.HandleFunc("/users", middleware.CORS(middleware.IsAuthorized(controllers.ListAllUsers))).Methods("GET")
 	router.HandleFunc("/user/{userId}", middleware.CORS(middleware.IsAuthorized(controllers.GetUser))).Methods("GET")
+	router.HandleFunc("/user/{userId}/channels", middleware.CORS(middleware.IsAuthorized(controllers.GetUserChannels))).Methods("GET")
 }
