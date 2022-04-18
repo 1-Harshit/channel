@@ -11,6 +11,7 @@ export interface SignupParams {
   Password: string;
   PhoneNo: string;
   Designation: string;
+  AvatarURL: string;
 }
 
 export interface LoginParams {

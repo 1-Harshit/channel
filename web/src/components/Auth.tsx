@@ -14,6 +14,7 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 	const [name, setName] = useState("");
 	const [phone, setphone] = useState("");
 	const [design, setdesign] = useState("");
+	const [avatar, setAvatar] = useState("");
 
 	const handleLogin = () => {
 		if (!username || !password) {
@@ -50,7 +51,8 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 			Username: username,
 			Password: password,
 			PhoneNo: phone,
-			Designation: design
+			Designation: design,
+			AvatarURL: avatar
 		}
 
 		postSignup(params).then((res) => {
@@ -69,21 +71,23 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 					</Text>
 					<Tabs initialValue="1" align="center" leftSpace={0}>
 						<Tabs.Item label={<>Login Form</>} value="1">
-							<Grid.Container gap={2} style={{ alignContent: "flex-start", alignItems: "flex-start", textAlign: "start" }}>
-								<Grid xs={24} width="100%">
-									<Text h3>Login Form</Text>
+							<Grid.Container gap={2} justify="center">
+								<Grid>
+									<Text h3 width="100%">Login Form</Text>
 								</Grid>
-								<Grid xs={24}>
-									<Input placeholder="Enter Username" onChange={(e) => { setUsername(e.target.value) }}>
-										Username
-									</Input>
-								</Grid>
-								<Grid xs={24}>
-									<Input.Password placeholder="Enter Password" onChange={(e) => { setPassword(e.target.value) }}>
-										Password
-									</Input.Password>
-								</Grid>
-								<Grid xs={24}>
+								<Grid.Container gap={2} justify="center">
+									<Grid xs={6}>
+										<Input placeholder="Enter Username" onChange={(e) => { setUsername(e.target.value) }}>
+											Username
+										</Input>
+									</Grid>
+									<Grid xs={6}>
+										<Input.Password placeholder="Enter Password" onChange={(e) => { setPassword(e.target.value) }}>
+											Password
+										</Input.Password>
+									</Grid>
+								</Grid.Container>
+								<Grid >
 									<Button
 										auto
 										className="info-icon text-center"
@@ -98,39 +102,56 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 						</Tabs.Item>
 						<Tabs.Item label={<>Signup Form</>} value="2">
 							<Grid.Container gap={2} justify="center">
-								<Grid xs={24}>
+								<Grid>
 									<Text h3>Signup Form</Text>
 								</Grid>
-								<Grid xs={24}>
-									<Input placeholder="Enter Name" onChange={(e) => { setName(e.target.value) }}>
-										Name
-									</Input>
-								</Grid><Grid xs={24}>
-									<Input placeholder="Enter Username" onChange={(e) => { setUsername(e.target.value) }}>
-										Username
-									</Input>
-								</Grid>
-								<Grid xs={24}>
-									<Input.Password placeholder="Enter Password" onChange={(e) => { setPassword(e.target.value) }}>
-										Password
-									</Input.Password>
-								</Grid>
-								<Grid xs={24}>
-									<Input.Password placeholder="Re-Enter Password" onChange={(e) => { setPassword1(e.target.value) }}>
-										Password
-									</Input.Password>
-								</Grid>
-								<Grid xs={24}>
-									<Input placeholder="Phone Number" onChange={(e) => { setphone(e.target.value) }}>
-										Phone Number
-									</Input>
-								</Grid>
-								<Grid xs={24}>
-									<Input placeholder="Designation" onChange={(e) => { setdesign(e.target.value) }}>
-										Designation
-									</Input>
-								</Grid>
-								<Grid xs={24}>
+								<Grid.Container gap={2} justify="center">
+									<Grid xs={6}>
+										<Input placeholder="Enter Name" onChange={(e) => { setName(e.target.value) }}>
+											Name
+										</Input>
+									</Grid>
+									<Grid xs={6}>
+										<Input placeholder="Enter Username" onChange={(e) => { setUsername(e.target.value) }}>
+											Username
+										</Input>
+									</Grid>
+								</Grid.Container>
+								<Spacer />
+								<Grid.Container gap={2} justify="center">
+									<Grid xs={6}>
+										<Input.Password placeholder="Enter Password" onChange={(e) => { setPassword(e.target.value) }}>
+											Password
+										</Input.Password>
+									</Grid>
+									<Grid xs={6}>
+										<Input.Password placeholder="Re-Enter Password" onChange={(e) => { setPassword1(e.target.value) }}>
+											Password
+										</Input.Password>
+									</Grid>
+								</Grid.Container>
+								<Spacer />
+								<Grid.Container gap={2} justify="center">
+									<Grid xs={6}>
+										<Input placeholder="Phone Number" onChange={(e) => { setphone(e.target.value) }}>
+											Phone Number
+										</Input>
+									</Grid>
+									<Grid xs={6}>
+										<Input placeholder="Designation" onChange={(e) => { setdesign(e.target.value) }}>
+											Designation
+										</Input>
+									</Grid>
+								</Grid.Container>
+								<Spacer/>
+								<Grid.Container gap={2} justify="center">
+									<Grid xs={6}>
+										<Input placeholder="Avatar URL" width="100%" onChange={(e) => { setAvatar(e.target.value) }}>
+											Avatar URL
+										</Input>
+									</Grid>
+								</Grid.Container>
+								<Grid >
 									<Button
 										auto
 										className="info-icon text-center"
