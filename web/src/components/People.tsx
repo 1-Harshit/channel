@@ -42,12 +42,12 @@ const People: React.FC<Params> = ({ setIsAuthenticated }) => {
 			if (res.Status === 200) {
 				setPeople(res.Payload)
 			} else {
-				alert("Failed with error code: " + res.Status);
+				alert("Fetching people failed with error code: " + res.Status);
 			}
 		}).catch((err) => {
 			alert(err || err?.message || "Something went wrong!");
 		})
-	})
+	}, [])
 
 	return (<>
 		<Card width="100%">
