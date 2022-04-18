@@ -1,16 +1,23 @@
 import { Card, Grid, Text, Spacer, Link, Description, Input, Button, Modal } from '@geist-ui/core';
 import { Send, Plus, ArrowRight, X, Trash2 } from "@geist-ui/icons";
 import React, { useState, useEffect, useRef } from 'react';
-import { getChannels } from '../api/callbacks';
+import { ChannelParams, getChannels, getMessages, postChannel, deleteChannel as dChannel, postMessage, MessageParams } from '../api/callbacks';
 import People from './People';
 import Channel from './Channel';
 
-const InsideScreen = () => {
-	const [activeChannel, setActiveChannel] = useState({ description: "General Conversation", name: "general", createdAt: 1649745585, createdBy: "Harshit" });
+interface Params {
+	setIsAuthenticated: (value: React.SetStateAction<boolean>) => void
+}
+
+const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
+	const [activeChannel, setActiveChannel] = useState({ description: "General Conversation", name: "general", createdAt: 1649745585, createdByUsername: "Harshit" });
 	const messageEndRef = useRef<HTMLDivElement>(null);
 	const [modalIsOpen, setIsOpen] = React.useState(false);
 	const [modalIsOpen1, setModalIsOpen1] = React.useState(false);
 	const [tab, setTab] = useState('c');
+	const [cname, setCname] = useState("");
+	const [descr, setDescr] = useState("");
+	const [msg, setMsg] = useState("");
 
 	const closeModal = () => {
 		setIsOpen(false);
@@ -20,22 +27,24 @@ const InsideScreen = () => {
 	}
 
 	const [channels, setChannels] = useState([
-		{ description: "General Conversation", name: "general", createdAt: 1649745585, createdBy: "Harshit" },
-		{ description: "General Techy Stuff", name: "tech", createdAt: 1649748900, createdBy: "Harshit" },
-		{ description: "Random Chit Chat", name: "chit-chat", createdAt: 1649747600, createdBy: "Bhuvan" },
-		{ description: "Water Cooler", name: "water-ciiker", createdAt: 1649743900, createdBy: "Harshit" },
+		{ description: "General Conversation", name: "general", createdAt: 1649745585, createdByUsername: "Harshit" },
+		{ description: "Water Cooler", name: "water-cooler", createdAt: 1649743900, createdByUsername: "Harshit" },
 	]);
 	const [messages, setMessages] = useState([
-		{ timeStamp: "Oct 01, 7:15 AM", name: "Harshit Raj", message: "Hey there!" },
-		{ timeStamp: "Apr 10, 8:15 PM", name: "Bhuvan Singla", message: "Hola" },
-		{ timeStamp: "Apr 10, 8:17 PM", name: "Harshit Raj", message: "Nice portal!" },
-		{ timeStamp: "Apr 10, 8:17 PM", name: "Bhuvan Singla", message: "Indeed" },
-		{ timeStamp: "Apr 10, 8:18 PM", name: "Harshit Raj", message: "Should add this in report now!" },
-		{ timeStamp: "Apr 10, 8:19 PM", name: "Bhuvan Singla", message: "Sure!" },
-		{ timeStamp: "Apr 10, 8:20 PM", name: "Harshit Raj", message: "Treat at CCD?" },
-		{ timeStamp: "Apr 10, 8:21 PM", name: "Bhuvan Singla", message: "NO!" },
-		{ timeStamp: "Apr 10, 8:22 PM", name: "Harshit Raj", message: "Okie Bye!" },
-		{ timeStamp: "Apr 10, 8:23 PM", name: "Bhuvan Singla", message: "bye." },
+		{
+			id: 1,
+			content: "hello ppl",
+			sentAt: 1650297586,
+			sentByUsername: "harshit",
+			channelName: "lollll"
+		},
+		{
+			id: 2,
+			content: "hello!",
+			sentAt: 1680297596,
+			sentByUsername: "harshit 2",
+			channelName: "lollll"
+		},
 	]);
 
 	const handleScroll = () => {
@@ -52,15 +61,86 @@ const InsideScreen = () => {
 		setIsOpen(true);
 	}
 
+	const deleteChannel = () => {
+		dChannel(activeChannel.name);
+		setModalIsOpen1(false);
+		getChannels().then((res) => {
+			if (res.Status === 200) {
+				setChannels(res.Payload)
+			} else {
+				alert("Failed with error code: " + res.Status);
+			}
+		}).catch((err) => {
+			alert(err || err?.message || "Something went wrong!");
+		})
+	}
+
+	const sendMessage = () => {
+		const params: MessageParams = {
+			Content: msg,
+			ChannelId: activeChannel.name
+		}
+		postMessage(params).then((res) => {
+			if (res.Status === 200) {
+				getMessages(activeChannel.name).then((res) => {
+					if (res.Status === 200) {
+						setMessages(res.Payload);
+					} else {
+						alert("Failed with error code: " + res.Status);
+					}
+				}).catch((err) => {
+					alert(err || err?.message || "Something went wrong!");
+				})
+			} else {
+				alert("Failed with error code: " + res.Status);
+			}
+		}).catch((err) => {
+			alert(err || err?.message || "Something went wrong!");
+		})
+	}
+
 	const addChannel = () => {
-		//api call
+		const params: ChannelParams = {
+			Name: cname,
+			Description: descr
+		};
+		postChannel(params).then(res => {
+			if (res.Status === 200) {
+				setChannels([...channels, { description: descr, name: cname, createdAt: Date.now(), createdByUsername: "you" }]);
+				setIsOpen(false);
+			} else {
+				alert("Failed with error code: " + res.Status);
+			}
+		}).catch(err => {
+			console.log(err);
+			alert("Error creating channel");
+		});
 	}
 
 	useEffect(() => {
-
 		getChannels().then((res) => {
-			console.log(res.Payload)
+			if (res.Status === 200) {
+				setChannels(res.Payload)
+			} else {
+				alert("Failed with error code: " + res.Status);
+			}
+		}).catch((err) => {
+			alert(err || err?.message || "Something went wrong!");
 		})
+	});
+
+	useEffect(() => {
+		setTimeout(() => {
+			getMessages(activeChannel.name).then((res) => {
+				if (res.Status === 200) {
+					setMessages(res.Payload)
+				} else {
+					alert("Fetching message failed with error code: " + res.Status);
+				}
+			}).catch((err) => {
+				alert(err || err?.message || "Something went wrong!");
+			})
+		}, 5000);
 
 	});
 
@@ -90,16 +170,17 @@ const InsideScreen = () => {
 				{messages.map((message, i) => {
 					const content = (
 						<Text p mt={0}>
-							{message.message}
+							{message.content}
 						</Text>
 					);
+					const s = new Date(message.sentAt * 1000).toLocaleDateString()
 					return (
 						<Grid.Container style={{ margin: 15 }}>
 							<Grid xs={21}>
-								<Description title={message.name} content={content} />
+								<Description title={message.sentByUsername} content={content} />
 							</Grid>
 							<Grid xs={3} alignItems="flex-start" alignContent="flex-end">
-								<Text type="secondary" style={{ fontSize: "0.75rem" }}>{message.timeStamp}</Text>
+								<Text type="secondary" style={{ fontSize: "0.75rem" }}>{s}</Text>
 							</Grid>
 						</Grid.Container>)
 				})}
@@ -110,10 +191,10 @@ const InsideScreen = () => {
 			<Card shadow width="100%" style={{ borderWidth: 0 }}>
 				<Grid.Container>
 					<Grid xs={22}>
-						<Input placeholder="Message" width="100%" />
+						<Input placeholder="Message" width="100%" onChange={(e) => { setMsg(e.target.value) }} />
 					</Grid>
 					<Grid xs={2}>
-						<Button auto className="info-icon text-center" style={{ borderWidth: 0, justifyContent: "center", alignItems: "center" }}>
+						<Button auto className="info-icon text-center" style={{ borderWidth: 0, justifyContent: "center", alignItems: "center" }} onClick={() => { sendMessage() }}>
 							<Spacer inline w={0.1} />
 							<Send />
 						</Button>
@@ -156,11 +237,11 @@ const InsideScreen = () => {
 			>
 				<Modal.Title>Add Channel</Modal.Title>
 				<div style={{ alignContent: "flex-start", alignItems: "flex-start", textAlign: "start" }}>
-					<Input width="100%" placeholder="Enter Channel name">
+					<Input width="100%" placeholder="Enter Channel name" onChange={(e) => { setCname(e.target.value) }}>
 						Channel Name
 					</Input>
 					<Spacer />
-					<Input width="100%" placeholder="Enter Description">
+					<Input width="100%" placeholder="Enter Description" onChange={(e) => { setDescr(e.target.value) }}>
 						Description
 					</Input>
 				</div>
@@ -168,7 +249,7 @@ const InsideScreen = () => {
 					<Spacer inline w={0.1} />
 					Close<Spacer w={0.5} /> <X />
 				</Modal.Action>
-				<Modal.Action onClick={addChannel}>
+				<Modal.Action onClick={() => { addChannel() }}>
 					<Spacer inline w={0.1} />
 					Create Channel<Spacer w={0.5} /> <ArrowRight />
 				</Modal.Action>
@@ -188,7 +269,7 @@ const InsideScreen = () => {
 				<Modal.Action onClick={closeModal1}>
 					Close
 				</Modal.Action>
-				<Modal.Action passive onClick={addChannel}>
+				<Modal.Action passive onClick={() => { deleteChannel() }}>
 					Yes delete!
 				</Modal.Action>
 

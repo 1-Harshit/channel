@@ -10,7 +10,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
-    if (localStorage.getItem("token") != null) {
+    if (sessionStorage.getItem("token") != null) {
       setIsAuthenticated(true);
     }
   }, []);
@@ -27,7 +27,7 @@ function App() {
       <GeistProvider themes={[theme]}>
         <CssBaseline />
         {isAuthenticated ? (
-          <GeneralScreen />
+          <GeneralScreen setIsAuthenticated={setIsAuthenticated} />
         ) : (
           <AuthScreen setIsAuthenticated={setIsAuthenticated} />
         )

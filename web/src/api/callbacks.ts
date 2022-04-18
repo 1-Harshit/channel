@@ -64,7 +64,7 @@ const postLogin = async (params: LoginParams): Promise<Response> => {
     })
     .then((res) => {
       payload = res.data?.token;
-      localStorage.setItem("token", payload);
+      sessionStorage.setItem("token", payload);
       status = res.status;
     })
     .catch((err) => {
@@ -81,7 +81,7 @@ const postLogin = async (params: LoginParams): Promise<Response> => {
 };
 
 const postChannel = async (channelParams: ChannelParams): Promise<Response> => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
@@ -109,7 +109,7 @@ const postChannel = async (channelParams: ChannelParams): Promise<Response> => {
 };
 
 const getChannels = async (): Promise<Response> => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
@@ -135,8 +135,30 @@ const getChannels = async (): Promise<Response> => {
   return response;
 };
 
+const deleteChannel = async (channelId: string) => {
+  const token = sessionStorage.getItem("token");
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+
+  let status;
+  await axios
+    .delete(BASE_URL + `/channel/${channelId}`, config)
+    .then((res) => {
+      status = res.status;
+    })
+    .catch((err) => {
+      status = err?.response?.status ?? 500;
+    });
+
+  const response: Response = {
+    Status: status,
+  };
+  return response;
+};
+
 const getMessages = async (channelId: string): Promise<Response> => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
@@ -161,7 +183,7 @@ const getMessages = async (channelId: string): Promise<Response> => {
 };
 
 const postMessage = async (message: MessageParams): Promise<Response> => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
@@ -199,6 +221,7 @@ export {
   postLogin,
   postChannel,
   getChannels,
+  deleteChannel,
   getMessages,
   postMessage,
 };
