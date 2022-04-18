@@ -15,6 +15,7 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 	const [phone, setphone] = useState("");
 	const [design, setdesign] = useState("");
 	const [avatar, setAvatar] = useState("");
+	const [s, setS] = useState(false);
 
 	const handleLogin = () => {
 		if (!username || !password) {
@@ -58,6 +59,8 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 		postSignup(params).then((res) => {
 			if (res.Status !== 200) {
 				alert("Failed with status code " + res.Status)
+			} else {
+				setS(true);
 			}
 		});
 	}
@@ -143,7 +146,7 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 										</Input>
 									</Grid>
 								</Grid.Container>
-								<Spacer/>
+								<Spacer />
 								<Grid.Container gap={2} justify="center">
 									<Grid xs={6}>
 										<Input placeholder="Avatar URL" width="100%" onChange={(e) => { setAvatar(e.target.value) }}>
@@ -151,16 +154,23 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 										</Input>
 									</Grid>
 								</Grid.Container>
-								<Grid >
-									<Button
-										auto
-										className="info-icon text-center"
-										onClick={() => { handleSignup() }}
-										style={{ borderWidth: 0, justifyContent: "center", alignItems: "center" }}
-									>
-										<Spacer inline w={0.1} />
-										Signup<Spacer w={0.5} /> <ArrowRight />
-									</Button>
+								<Spacer />
+								<Grid.Container gap={2} justify="center">
+
+									<Grid >
+										<Button
+											auto
+											className="info-icon text-center"
+											onClick={() => { handleSignup() }}
+											style={{ borderWidth: 0, justifyContent: "center", alignItems: "center" }}
+										>
+											<Spacer inline w={0.1} />
+											Signup<Spacer w={0.5} /> <ArrowRight />
+										</Button>
+									</Grid>
+								</Grid.Container>
+								<Grid>
+									{s && <Text h3>You can Login Now!</Text>}
 								</Grid>
 							</Grid.Container>
 						</Tabs.Item>
