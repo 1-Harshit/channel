@@ -190,7 +190,7 @@ const postMessage = async (message: MessageParams): Promise<Response> => {
   let status, payload;
   await axios
     .post(
-      BASE_URL + `channel/${message.ChannelId}/message`,
+      BASE_URL + `/channel/${message.ChannelId}/message`,
       bodyParameters,
       config
     )
@@ -216,7 +216,7 @@ const getUsers = async () => {
   let payload, status;
 
   await axios
-    .get(BASE_URL + `users`, config)
+    .get(BASE_URL + `/users`, config)
     .then((res) => {
       payload = res.data;
       status = res.status;
