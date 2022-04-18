@@ -128,7 +128,7 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 		}).catch((err) => {
 			alert(err || err?.message || "Something went wrong!");
 		})
-	});
+	}, []);
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -142,14 +142,22 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 				alert(err || err?.message || "Something went wrong!");
 			})
 		}, 5000);
-
-	});
+	}, []);
 
 	useEffect(() => {
 		handleScroll();
 	}, [messages])
 
 	useEffect(() => {
+		getMessages(activeChannel.name).then((res) => {
+			if (res.Status === 200) {
+				setMessages(res.Payload)
+			} else {
+				alert("Fetching message failed with error code: " + res.Status);
+			}
+		}).catch((err) => {
+			alert(err || err?.message || "Something went wrong!");
+		})
 	}, [activeChannel]);
 
 	const messagePane = (<><Grid xs={24}>
