@@ -8,6 +8,7 @@ type Channel struct {
 	CreatedAt    int64  `json:"createdAt"`
 	UserUsername string `json:"createdByUsername"`
 	User         User   `gorm:"foreignkey:UserUsername;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"-"`
+	Members      []User `gorm:"many2many:channel_users;" json:"-"`
 }
 
 func CreateChannel(name string, description string, username string) error {
@@ -27,4 +28,72 @@ func DeleteChannel(name string) error {
 	channel := Channel{Name: name}
 	err := db.Delete(&channel).Error
 	return err
+}
+
+func JoinChannel(name string, username string) error {
+	channel := Channel{Name: name}
+	err := db.First(&channel).Error
+	if err != nil {
+		return err
+	}
+
+	user := User{Username: username}
+	err = db.First(&user).Error
+	if err != nil {
+		return err
+	}
+
+	err = db.Model(&channel).Association("Members").Append(&user)
+	return err
+}
+
+func LeaveChannel(name string, username string) error {
+	channel := Channel{Name: name}
+	err := db.First(&channel).Error
+	if err != nil {
+		return err
+	}
+
+	user := User{Username: username}
+	err = db.First(&user).Error
+	if err != nil {
+		return err
+	}
+
+	err = db.Model(&channel).Association("Members").Delete(&user)
+	return err
+}
+
+func GetChannelMembers(name string) ([]User, error) {
+	channel := Channel{Name: name}
+	err := db.First(&channel).Error
+	if err != nil {
+		return nil, err
+	}
+
+	var members []User
+	err = db.Model(&channel).Association("Members").Find(&members)
+	return members, err
+}
+
+func IsMemberOfChannel(name string, username string) (bool, error) {
+	channel := Channel{Name: name}
+	err := db.First(&channel).Error
+	if err != nil {
+		return false, err
+	}
+
+	var members []User
+	err = db.Model(&channel).Association("Members").Find(&members)
+	if err != nil {
+		return false, err
+	}
+
+	for _, member := range members {
+		if member.Username == username {
+			return true, nil
+		}
+	}
+
+	return false, nil
 }
