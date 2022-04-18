@@ -30,6 +30,7 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 		{ description: "General Conversation", name: "general", createdAt: 1649745585, createdByUsername: "Harshit" },
 		{ description: "Water Cooler", name: "water-cooler", createdAt: 1649743900, createdByUsername: "Harshit" },
 	]);
+
 	const [messages, setMessages] = useState([
 		{
 			id: 1,
@@ -284,7 +285,7 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 						<Card style={{ border: "none" }} height="4px">
 						</Card>
 					</Grid>
-					{tab === "p" ? <People /> : tab === "c" ? <Channel /> : messagePane}
+					{tab === "p" ? <People setIsAuthenticated={setIsAuthenticated} /> : tab === "c" ? <Channel channels={channels}/> : messagePane}
 				</Grid.Container>
 			</Grid>
 			<Grid xs={4} />

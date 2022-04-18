@@ -1,26 +1,29 @@
-import { Card, Grid, Spacer, Description, Image } from '@geist-ui/core';
-import { useState } from 'react';
+import { Card, Grid, Spacer, Description, Image, Button } from '@geist-ui/core';
+import { useEffect, useState } from 'react';
 import { Modal } from '@geist-ui/core';
+import { getUsers } from '../api/callbacks';
 
 interface User {
 	name: string;
 	username: string;
-	phone: string;
-	avatar: string;
+	phoneNo: string;
+	avatarURL: string;
 	designation: string;
+	lastLoginAt: number;
+	channels?: any;
+}
+interface Params {
+	setIsAuthenticated: (value: React.SetStateAction<boolean>) => void
 }
 
-const People = () => {
-	const [people, setPeople] = useState([
-		{ name: "Harshit raj", username: "harshit", avatar: "https://avatars.githubusercontent.com/u/75195728?v=4", phone: "123456789", designation: "OWNER" },
-		{ name: "Harshit raj 2", username: "harshitr", avatar: "https://avatars.githubusercontent.com/u/82652819?v=4", phone: "129955789", designation: "GBM" },
-		{ name: "Bhuvan", username: "bhuvan", avatar: "https://avatars.githubusercontent.com/u/16359086?v=4", phone: "8963541278", designation: "NON GBM" },
-		{ name: "Someone", username: "someone", avatar: "https://avatars.githubusercontent.com/u/16349086?v=4", phone: "8963541278", designation: "GBM" },
+const People: React.FC<Params> = ({ setIsAuthenticated }) => {
+	const [people, setPeople] = useState<User[]>([
+		{ name: "Harshit raj", username: "harshit", avatarURL: "https://avatars.githubusercontent.com/u/75195728?v=4", phoneNo: "123456789", designation: "OWNER", lastLoginAt: 1326474879 },
+		{ name: "Bhuvan", username: "bhuvan", avatarURL: "https://avatars.githubusercontent.com/u/16359086?v=4", phoneNo: "8963541278", designation: "NON GBM", lastLoginAt: 485875689 },
 	]);
 
 	const [modalIsOpen, setModalIsOpen] = useState(false);
-	const [channel, setChannel] = useState<User>({ name: "", username: "", avatar: "", phone: "", designation: "" });
-
+	const [channel, setChannel] = useState<User>({ name: "", username: "", avatarURL: "", phoneNo: "", designation: "", lastLoginAt: 0 });
 
 	const closeModal = () => { setModalIsOpen(false) }
 
@@ -29,6 +32,22 @@ const People = () => {
 		setModalIsOpen(true);
 	}
 
+	const logoutClick = () => {
+		localStorage.removeItem("token");
+		setIsAuthenticated(false);
+	}
+
+	useEffect(() => {
+		getUsers().then((res) => {
+			if (res.Status === 200) {
+				setPeople(res.Payload)
+			} else {
+				alert("Failed with error code: " + res.Status);
+			}
+		}).catch((err) => {
+			alert(err || err?.message || "Something went wrong!");
+		})
+	})
 
 	return (<>
 		<Card width="100%">
@@ -44,10 +63,10 @@ const People = () => {
 				User view
 			</Modal.Title>
 			<div style={{ alignContent: "flex-start", alignItems: "flex-start", textAlign: "start" }}>
-				<Image src={channel.avatar}></Image>
+				<Image src={channel.avatarURL}></Image>
 				<Description title={"User Name"} content={<b>{channel?.name}</b>} /> <Spacer />
 				<Description title={"Username"} content={<b>{channel?.username}</b>} /><Spacer />
-				<Description title={"Channel Phone No"} content={<b>{channel?.phone}</b>} /><Spacer />
+				<Description title={"Phone No"} content={<b>{channel?.phoneNo}</b>} /><Spacer />
 				<Description title={"Channel Designation"} content={<b>{channel.designation}</b>} />
 			</div>
 
@@ -62,14 +81,17 @@ const People = () => {
 					return (
 						<Grid lg={8} justify="center">
 							<Card className="col" style={{ cursor: "pointer" }} onClick={() => { userModal(person) }}>
-								<Image src={person.avatar}></Image>
+								<Image src={person.avatarURL}></Image>
 								<Description title={person.username} content={<b>{person.name.toUpperCase()}</b>} />
 							</Card>
 						</Grid>
 					);
 				})}
 			</Grid.Container>
-
+			<Spacer />
+			<Button type="error" style={{ width: "100%" }} onClick={() => { logoutClick() }}>
+				Log Out
+			</Button>
 		</Card>
 	</>);
 }

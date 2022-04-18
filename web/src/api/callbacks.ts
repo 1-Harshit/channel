@@ -33,6 +33,14 @@ export interface Response {
   Status: any;
 }
 
+const getConfig = () => {
+  const token = sessionStorage.getItem("token");
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  return config;
+};
+
 // API
 const postSignup = async (params: SignupParams): Promise<Response> => {
   let status;
@@ -81,10 +89,7 @@ const postLogin = async (params: LoginParams): Promise<Response> => {
 };
 
 const postChannel = async (channelParams: ChannelParams): Promise<Response> => {
-  const token = sessionStorage.getItem("token");
-  const config = {
-    headers: { Authorization: `Bearer ${token}` },
-  };
+  const config = getConfig();
 
   const bodyParameters = {
     Name: channelParams.Name,
@@ -109,10 +114,7 @@ const postChannel = async (channelParams: ChannelParams): Promise<Response> => {
 };
 
 const getChannels = async (): Promise<Response> => {
-  const token = sessionStorage.getItem("token");
-  const config = {
-    headers: { Authorization: `Bearer ${token}` },
-  };
+  const config = getConfig();
 
   let status, payload;
   await axios
@@ -136,10 +138,7 @@ const getChannels = async (): Promise<Response> => {
 };
 
 const deleteChannel = async (channelId: string) => {
-  const token = sessionStorage.getItem("token");
-  const config = {
-    headers: { Authorization: `Bearer ${token}` },
-  };
+  const config = getConfig();
 
   let status;
   await axios
@@ -158,10 +157,7 @@ const deleteChannel = async (channelId: string) => {
 };
 
 const getMessages = async (channelId: string): Promise<Response> => {
-  const token = sessionStorage.getItem("token");
-  const config = {
-    headers: { Authorization: `Bearer ${token}` },
-  };
+  const config = getConfig();
 
   let status, payload;
   await axios
@@ -183,10 +179,7 @@ const getMessages = async (channelId: string): Promise<Response> => {
 };
 
 const postMessage = async (message: MessageParams): Promise<Response> => {
-  const token = sessionStorage.getItem("token");
-  const config = {
-    headers: { Authorization: `Bearer ${token}` },
-  };
+  const config = getConfig();
 
   const bodyParameters = {
     Content: message.Content,
@@ -216,6 +209,29 @@ const postMessage = async (message: MessageParams): Promise<Response> => {
   return response;
 };
 
+const getUsers = async () => {
+  const config = getConfig();
+
+  let payload, status;
+
+  await axios
+    .get(BASE_URL + `users`, config)
+    .then((res) => {
+      payload = res.data;
+      status = res.status;
+    })
+    .catch((err) => {
+      payload = err?.response?.data.error ?? ERROR_MESSAGE;
+      status = err?.response?.status ?? 500;
+    });
+
+  const response: Response = {
+    Payload: payload,
+    Status: status,
+  };
+  return response;
+};
+
 export {
   postSignup,
   postLogin,
@@ -224,4 +240,5 @@ export {
   deleteChannel,
   getMessages,
   postMessage,
+  getUsers,
 };
