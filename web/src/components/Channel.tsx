@@ -42,7 +42,7 @@ const People: React.FC<Props> = ({channels}) => {
 				<Description title={"Channel Name"} content={<b>{channel?.name}</b>} /> <Spacer />
 				<Description title={"Channel Description"} content={<b>{channel?.description}</b>} /><Spacer />
 				<Description title={"Channel Created By"} content={<b>{channel?.createdByUsername}</b>} /><Spacer />
-				<Description title={"Channel Created At"} content={<b>{new Date(channel.createdAt).toDateString()}</b>} />
+				<Description title={"Channel Created At"} content={<b>{new Date(channel.createdAt*1000).toDateString()}</b>} />
 			</div>
 
 			<Modal.Action onClick={closeModal}>

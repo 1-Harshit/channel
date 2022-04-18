@@ -67,7 +67,8 @@ const People: React.FC<Params> = ({ setIsAuthenticated }) => {
 				<Description title={"User Name"} content={<b>{channel?.name}</b>} /> <Spacer />
 				<Description title={"Username"} content={<b>{channel?.username}</b>} /><Spacer />
 				<Description title={"Phone No"} content={<b>{channel?.phoneNo}</b>} /><Spacer />
-				<Description title={"Channel Designation"} content={<b>{channel.designation}</b>} />
+				<Description title={"Channel Designation"} content={<b>{channel.designation}</b>} /> <Spacer />
+				<Description title={"Last Login"} content={<b>{(new Date(channel.lastLoginAt*1000)).toDateString()}</b>} />
 			</div>
 
 			<Modal.Action onClick={closeModal}>

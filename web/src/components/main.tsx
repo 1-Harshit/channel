@@ -174,7 +174,7 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 							{message.content}
 						</Text>
 					);
-					const s = new Date(message.sentAt * 1000).toLocaleDateString()
+					const s = new Date(message.sentAt * 1000).toDateString()
 					return (
 						<Grid.Container style={{ margin: 15 }}>
 							<Grid xs={21}>
