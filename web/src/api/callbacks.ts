@@ -272,7 +272,7 @@ const postMembership = async (channelId: string): Promise<Response> => {
 
   let status;
   await axios
-    .post(BASE_URL + `/channel/${channelId}/membership`, config)
+    .post(BASE_URL + `/channel/${channelId}/membership`, {}, config)
     .then((res) => {
       status = res.status;
     })
@@ -289,7 +289,7 @@ const postMembership = async (channelId: string): Promise<Response> => {
 const deleteMembership = async (channelId: string): Promise<Response> => {
   const config = getConfig();
 
-  let status, payload;
+  let status;
   await axios
     .delete(BASE_URL + `/channel/${channelId}/membership`, config)
     .then((res) => {

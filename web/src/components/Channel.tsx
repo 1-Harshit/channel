@@ -1,6 +1,6 @@
-import { Card, Grid, Spacer, Description, Modal, Text, useToasts, Button } from '@geist-ui/core';
+import { Card, Grid, Spacer, Description, Modal, Text, Button } from '@geist-ui/core';
 import { useEffect, useState } from 'react';
-import { deleteMembership, getAllChannels, getChannels, postMembership, Response } from '../api/callbacks';
+import { deleteMembership, getAllChannels, getChannels, postMembership } from '../api/callbacks';
 
 
 export interface Channel {
@@ -50,22 +50,23 @@ const People: React.FC<Props> = ({ channels, setchannels }) => {
 			alert(err || err?.message || "Something went wrong!");
 		})
 	}
+
 	const postMembershipp = (id: string) => {
 		postMembership(id).then((res) => {
 			console.log(res);
+			updateChannels()
 		}).catch((err) => {
 			alert("post memebership failed with: " + err || err?.message || "")
 		})
-		updateChannels()
 	}
 
 	const deleteMembershipp = (id: string) => {
 		deleteMembership(id).then((res) => {
 			console.log(res);
+			updateChannels()
 		}).catch((err) => {
 			alert("delete memebership failed with: " + err || err?.message || "")
 		})
-		updateChannels()
 	}
 
 	return (<>
