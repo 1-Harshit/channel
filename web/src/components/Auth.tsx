@@ -71,13 +71,13 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 			<Grid xs={12}>
 				<Card shadow width="100%" height="800px" style={{ borderWidth: 0 }}>
 					<Text type="secondary" h2 className="center" width="100%" style={{ borderWidth: 0, justifyContent: "center", alignItems: "center", textAlign: "center" }} >
-						Channel Login/Signup
+						Welcome to Channel!
 					</Text>
 					<Tabs initialValue="1" align="center" leftSpace={0}>
-						<Tabs.Item label={<>Login Form</>} value="1">
+						<Tabs.Item label={<>Login</>} value="1">
 							<Grid.Container gap={2} justify="center">
 								<Grid>
-									<Text h3 width="100%">Login Form</Text>
+									<Text h3 width="100%">Login</Text>
 								</Grid>
 								<Grid.Container gap={2} justify="center">
 									<Grid xs={6}>
@@ -104,10 +104,10 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 								</Grid>
 							</Grid.Container>
 						</Tabs.Item>
-						<Tabs.Item label={<>Signup Form</>} value="2">
+						<Tabs.Item label={<>Signup</>} value="2">
 							<Grid.Container gap={2} justify="center">
 								<Grid>
-									<Text h3>Signup Form</Text>
+									<Text h3>Signup</Text>
 								</Grid>
 								<Grid.Container gap={2} justify="center">
 									<Grid xs={6}>
@@ -130,7 +130,7 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 									</Grid>
 									<Grid xs={6}>
 										<Input.Password placeholder="Re-Enter Password" onChange={(e) => { setPassword1(e.target.value) }}>
-											Password
+											Confirm Password
 										</Input.Password>
 									</Grid>
 								</Grid.Container>
