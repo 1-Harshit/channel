@@ -1,9 +1,9 @@
 import { Card, Grid, Spacer, Description, Modal, Text, useToasts, Button } from '@geist-ui/core';
 import { useEffect, useState } from 'react';
-import { deleteMembership, getAllChannels, postMembership, Response } from '../api/callbacks';
+import { deleteMembership, getAllChannels, getChannels, postMembership, Response } from '../api/callbacks';
 
 
-interface Channel {
+export interface Channel {
 	name: string;
 	description: string;
 	createdAt: number;
@@ -12,9 +12,10 @@ interface Channel {
 
 interface Props {
 	channels: Channel[]
+	setchannels: (value: React.SetStateAction<Channel[]>) => void
 }
 
-const People: React.FC<Props> = ({ channels }) => {
+const People: React.FC<Props> = ({ channels, setchannels }) => {
 
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const [channel, setChannel] = useState<Channel>({ name: "", description: "", createdAt: 0, createdByUsername: "" });
@@ -38,13 +39,35 @@ const People: React.FC<Props> = ({ channels }) => {
 		});
 	}, [])
 
+	const updateChannels = () => {
+		getChannels().then((res) => {
+			if (res.Status === 200) {
+				setchannels(res.Payload)
+			} else {
+				alert("Failed with error code: " + res.Status);
+			}
+		}).catch((err) => {
+			alert(err || err?.message || "Something went wrong!");
+		})
+	}
 	const postMembershipp = (id: string) => {
 		postMembership(id).then((res) => {
 			console.log(res);
 		}).catch((err) => {
 			alert("post memebership failed with: " + err || err?.message || "")
 		})
+		updateChannels()
 	}
+
+	const deleteMembershipp = (id: string) => {
+		deleteMembership(id).then((res) => {
+			console.log(res);
+		}).catch((err) => {
+			alert("delete memebership failed with: " + err || err?.message || "")
+		})
+		updateChannels()
+	}
+
 	return (<>
 		<Card width="100%">
 			<Description title={"List of channels registered"} content={<b>All Channel</b>} />
@@ -82,7 +105,7 @@ const People: React.FC<Props> = ({ channels }) => {
 								<Description title={"Channel Name"} content={<b>{person?.name}</b>} /> <Spacer />
 								<Description title={"Channel Description"} content={<b>{person?.description}</b>} />
 								<Spacer />
-								<Button onClick={() => { deleteMembership(person.name) }}>Leave Channel</Button>
+								<Button onClick={() => { deleteMembershipp(person.name) }}>Leave Channel</Button>
 							</Card>
 						</Grid>
 					);
