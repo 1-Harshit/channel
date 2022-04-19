@@ -219,14 +219,23 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 
 	const sidebar = <Card width="100%" height="500px" paddingLeft="25%" style={{ borderWidth: 0 }}>
 		<Text style={{ color: "#888", letterSpacing: "1.5px", fontSize: "0.8125rem", cursor: "pointer" }} onClick={() => { setTab("c"); }}>
-			CHANNEL  <Plus onClick={handleAddChannel} fontSize="0.8rem" />
+			ALL CHANNELS
+		</Text>
+		<Text style={{ color: "#888", letterSpacing: "1.5px", fontSize: "0.8125rem", cursor: "pointer" }} onClick={handleAddChannel}>ADD CHANNEL</Text>
+		<Spacer h={0.5} />
+
+		<Text style={{ color: "#888", letterSpacing: "1.5px", fontSize: "0.8125rem", cursor: "pointer" }} onClick={() => { setTab("p"); }}>
+			ALL PEOPLE
 		</Text>
 		<Spacer h={0.5} />
 
-		<Text style={{ color: "#333", letterSpacing: "1.5px", fontSize: "1rem", cursor: "pointer" }} onClick={() => { setTab("p"); }}>
-			People
-		</Text>
-		<Spacer h={0.5} />
+		{channels.length === 0 ? <Text style={{ color: "#888", letterSpacing: "1.5px", fontSize: "0.8125rem" }}>
+			You have no channels
+		</Text> :
+			<Text style={{ color: "#888", letterSpacing: "1.5px", fontSize: "0.8125rem" }} >
+				Your channels
+			</Text>
+		}
 
 		{channels.map((channel) => {
 			return (
