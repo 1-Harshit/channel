@@ -50,6 +50,9 @@ const postSignup = async (params: SignupParams): Promise<Response> => {
       Name: params.Name,
       Password: params.Password,
       Username: params.Username,
+      PhoneNo: params.PhoneNo,
+      Designation: params.Designation,
+      AvatarURL: params.AvatarURL,
     })
     .then((res) => {
       status = res.status;
@@ -68,7 +71,7 @@ const postLogin = async (params: LoginParams): Promise<Response> => {
     status;
   await axios
     .post(BASE_URL + "/user/login", {
-      RollNo: params.Username,
+      Username: params.Username,
       Password: params.Password,
     })
     .then((res) => {
@@ -157,12 +160,18 @@ const deleteChannel = async (channelId: string) => {
   return response;
 };
 
-const getMessages = async (channelId: string): Promise<Response> => {
+const getMessages = async (
+  channelId: string,
+  lastMessageAt?: number
+): Promise<Response> => {
   const config = getConfig();
 
   let status, payload;
   await axios
-    .get(BASE_URL + `/channel/${channelId}/messages`, config)
+    .get(BASE_URL + `/channel/${channelId}/messages`, {
+      ...config,
+      params: { after_time: lastMessageAt || 0 },
+    })
     .then((res) => {
       payload = res.data;
       status = res.status;

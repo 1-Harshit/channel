@@ -131,17 +131,21 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 	}, []);
 
 	useEffect(() => {
-		setTimeout(() => {
-			getMessages(activeChannel.name).then((res) => {
-				if (res.Status === 200) {
-					setMessages(res.Payload)
-				} else {
-					alert("Fetching message failed with error code: " + res.Status);
-				}
-			}).catch((err) => {
-				alert(err || err?.message || "Something went wrong!");
-			})
-		}, 5000);
+		let i = 0;
+		for (i = 0; i < 500; i++) {
+			setTimeout(() => {
+				const messageLast = (messages[messages.length - 1]?.channelName === activeChannel.name ? messages[messages.length - 1]?.sentAt : 0) || 0;
+				getMessages(activeChannel.name, messageLast).then((res) => {
+					if (res.Status === 200) {
+						setMessages(res.Payload)
+					} else {
+						alert("Fetching message failed with error code: " + res.Status);
+					}
+				}).catch((err) => {
+					alert(err || err?.message || "Something went wrong!");
+				})
+			}, 3000);
+		}
 	}, []);
 
 	useEffect(() => {
@@ -293,7 +297,7 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 						<Card style={{ border: "none" }} height="4px">
 						</Card>
 					</Grid>
-					{tab === "p" ? <People setIsAuthenticated={setIsAuthenticated} /> : tab === "c" ? <Channel channels={channels}/> : messagePane}
+					{tab === "p" ? <People setIsAuthenticated={setIsAuthenticated} /> : tab === "c" ? <Channel channels={channels} /> : messagePane}
 				</Grid.Container>
 			</Grid>
 			<Grid xs={4} />
