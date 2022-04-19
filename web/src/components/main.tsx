@@ -1,5 +1,5 @@
 import { Card, Grid, Text, Spacer, Link, Description, Input, Button, Modal } from '@geist-ui/core';
-import { Send, Plus, ArrowRight, X, Trash2 } from "@geist-ui/icons";
+import { Send, ArrowRight, X, Trash2 } from "@geist-ui/icons";
 import React, { useState, useEffect, useRef } from 'react';
 import { ChannelParams, getChannels, getMessages, postChannel, deleteChannel as dChannel, postMessage, MessageParams } from '../api/callbacks';
 import People from './People';
@@ -18,6 +18,7 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 	const [cname, setCname] = useState("");
 	const [descr, setDescr] = useState("");
 	const [msg, setMsg] = useState("");
+	const [tick, setTick] = useState(false);
 
 	const closeModal = () => {
 		setIsOpen(false);
@@ -71,6 +72,8 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 			} else {
 				alert("Failed with error code: " + res.Status);
 			}
+			setTick(!tick);
+			setTab('c');
 		}).catch((err) => {
 			alert(err || err?.message || "Something went wrong!");
 		})
@@ -95,6 +98,7 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 			} else {
 				alert("Failed with error code: " + res.Status);
 			}
+			setMsg("");
 		}).catch((err) => {
 			alert(err || err?.message || "Something went wrong!");
 		})
@@ -111,6 +115,8 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 			} else {
 				alert("Failed with error code: " + res.Status);
 			}
+			setTick(!tick);
+			setTab('c');
 		}).catch(err => {
 			console.log(err);
 			alert("Error creating channel");
@@ -132,6 +138,7 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 	const updateMessages = async () => {
 		let messageLast = 0;
 		if (messages.length > 0 && messages[0].channelName === activeChannel.name) {
+			console.log(messages[messages.length - 1].channelName);
 			messageLast = messages[messages.length - 1].sentAt;
 		}
 		getMessages(activeChannel.name, messageLast).then((res) => {
@@ -205,7 +212,7 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 			<Card shadow width="100%" style={{ borderWidth: 0 }}>
 				<Grid.Container>
 					<Grid xs={22}>
-						<Input placeholder="Message" width="100%" onChange={(e) => { setMsg(e.target.value) }} />
+						<Input placeholder="Message" width="100%" onChange={(e) => { setMsg(e.target.value) }} value={msg} />
 					</Grid>
 					<Grid xs={2}>
 						<Button auto className="info-icon text-center" style={{ borderWidth: 0, justifyContent: "center", alignItems: "center" }} onClick={() => { sendMessage() }}>
@@ -308,7 +315,7 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 						<Card style={{ border: "none" }} height="4px">
 						</Card>
 					</Grid>
-					{tab === "p" ? <People setIsAuthenticated={setIsAuthenticated} /> : tab === "c" ? <Channel channels={channels} setchannels={setChannels} /> : messagePane}
+					{tab === "p" ? <People setIsAuthenticated={setIsAuthenticated} /> : tab === "c" ? <Channel channels={channels} setchannels={setChannels} tick={tick} /> : messagePane}
 				</Grid.Container>
 			</Grid>
 			<Grid xs={4} />

@@ -13,9 +13,10 @@ export interface Channel {
 interface Props {
 	channels: Channel[]
 	setchannels: (value: React.SetStateAction<Channel[]>) => void
+	tick: boolean
 }
 
-const People: React.FC<Props> = ({ channels, setchannels }) => {
+const People: React.FC<Props> = ({ channels, setchannels, tick }) => {
 
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const [channel, setChannel] = useState<Channel>({ name: "", description: "", createdAt: 0, createdByUsername: "" });
@@ -37,7 +38,7 @@ const People: React.FC<Props> = ({ channels, setchannels }) => {
 		}).catch((err) => {
 			alert("Error in feching all channels " + err || err?.message || "");
 		});
-	}, [])
+	}, [tick])
 
 	const updateChannels = () => {
 		getChannels().then((res) => {
