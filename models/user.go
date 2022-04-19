@@ -13,7 +13,7 @@ type User struct {
 	PhoneNo          string    `json:"phoneNo"`
 	Designation      string    `json:"designation"`
 	AvatarURL        string    `json:"avatarURL"`
-	ChannelsMemberOf []Channel `gorm:"many2many:channel_users;" json:"channels"`
+	ChannelsMemberOf []Channel `gorm:"many2many:channel_users;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"-"`
 }
 
 type UserResponse struct {

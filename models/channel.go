@@ -8,7 +8,7 @@ type Channel struct {
 	CreatedAt    int64  `json:"createdAt"`
 	UserUsername string `json:"createdByUsername"`
 	User         User   `gorm:"foreignkey:UserUsername;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"-"`
-	Members      []User `gorm:"many2many:channel_users;" json:"-"`
+	Members      []User `gorm:"many2many:channel_users;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"-"`
 }
 
 func CreateChannel(name string, description string, username string) error {
