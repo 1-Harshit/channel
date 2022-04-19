@@ -101,7 +101,7 @@ const People: React.FC<Props> = ({ channels, setchannels }) => {
 				</Grid>
 				{channels.map((person) => {
 					return (
-						<Grid lg={8} justify="center">
+						<Grid lg={8} justify="center" key={person.name}>
 							<Card className="col" width="90%" style={{ cursor: "pointer" }} onClick={() => { userModal(person, 'l') }}>
 								<Description title={"Channel Name"} content={<b>{person?.name}</b>} /> <Spacer />
 								<Description title={"Channel Description"} content={<b>{person?.description}</b>} />
@@ -120,7 +120,7 @@ const People: React.FC<Props> = ({ channels, setchannels }) => {
 					if (channels.some((channel) => { return channel.name === person.name }))
 						return <></>;
 					else return (
-						<Grid lg={8} justify="center">
+						<Grid lg={8} justify="center" key={person.name}>
 							<Card className="col" width="90%" style={{ cursor: "pointer" }}
 								onClick={() => { userModal(person, 'j') }}
 							>

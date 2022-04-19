@@ -80,7 +80,7 @@ const People: React.FC<Params> = ({ setIsAuthenticated }) => {
 			<Grid.Container gap={2}>
 				{people.map((person) => {
 					return (
-						<Grid lg={8} justify="center">
+						<Grid lg={8} justify="center" key={person.username}>
 							<Card className="col" style={{ cursor: "pointer" }} onClick={() => { userModal(person) }}>
 								<Image src={person.avatarURL}></Image>
 								<Description title={person.username} content={<b>{person.name.toUpperCase()}</b>} />

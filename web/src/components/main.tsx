@@ -129,22 +129,28 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 		})
 	}, []);
 
+	const updateMessages = async () => {
+		const messageLast = (messages[messages.length - 1]?.channelName === activeChannel.name ? messages[messages.length - 1]?.sentAt : 0) || 0;
+		getMessages(activeChannel.name, messageLast).then((res) => {
+			if (res.Status === 200) {
+				setMessages(res.Payload);
+			} else {
+				alert("Fetching message failed with error code: " + res.Status);
+			}
+		}).catch((err) => {
+			alert(err || err?.message || "Something went wrong!");
+		});
+	}
+
 	useEffect(() => {
-		let i = 0;
-		// for (i = 0; i < 500; i++) {
-		setTimeout(() => {
-			const messageLast = (messages[messages.length - 1]?.channelName === activeChannel.name ? messages[messages.length - 1]?.sentAt : 0) || 0;
-			getMessages(activeChannel.name, messageLast).then((res) => {
-				if (res.Status === 200) {
-					setMessages(res.Payload)
-				} else {
-					alert("Fetching message failed with error code: " + res.Status);
-				}
-			}).catch((err) => {
-				alert(err || err?.message || "Something went wrong!");
-			})
-		}, 3000);
-		// }
+		updateMessages();
+
+		const interval = setInterval(() => {
+			updateMessages();
+		}, 5000);
+
+		return () => clearInterval(interval);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
@@ -187,7 +193,7 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 					);
 					const s = new Date(message.sentAt * 1000).toDateString()
 					return (
-						<Grid.Container style={{ margin: 15 }}>
+						<Grid.Container style={{ margin: 15 }} key={message.id}>
 							<Grid xs={21}>
 								<Description title={message.sentByUsername} content={content} />
 							</Grid>
@@ -233,6 +239,7 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 						href={"/#" + channel.name}
 						onClick={() => { setTab("m"); setActiveChannel(channel); }}
 						color={activeChannel.name === channel.name}
+						key={channel.name}
 					>
 						# {channel.name}
 					</Link>
