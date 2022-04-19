@@ -107,7 +107,6 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 		};
 		postChannel(params).then(res => {
 			if (res.Status === 200) {
-				setChannels([...channels, { description: descr, name: cname, createdAt: Date.now(), createdByUsername: "you" }]);
 				setIsOpen(false);
 			} else {
 				alert("Failed with error code: " + res.Status);
@@ -132,20 +131,20 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 
 	useEffect(() => {
 		let i = 0;
-		for (i = 0; i < 500; i++) {
-			setTimeout(() => {
-				const messageLast = (messages[messages.length - 1]?.channelName === activeChannel.name ? messages[messages.length - 1]?.sentAt : 0) || 0;
-				getMessages(activeChannel.name, messageLast).then((res) => {
-					if (res.Status === 200) {
-						setMessages(res.Payload)
-					} else {
-						alert("Fetching message failed with error code: " + res.Status);
-					}
-				}).catch((err) => {
-					alert(err || err?.message || "Something went wrong!");
-				})
-			}, 3000);
-		}
+		// for (i = 0; i < 500; i++) {
+		setTimeout(() => {
+			const messageLast = (messages[messages.length - 1]?.channelName === activeChannel.name ? messages[messages.length - 1]?.sentAt : 0) || 0;
+			getMessages(activeChannel.name, messageLast).then((res) => {
+				if (res.Status === 200) {
+					setMessages(res.Payload)
+				} else {
+					alert("Fetching message failed with error code: " + res.Status);
+				}
+			}).catch((err) => {
+				alert(err || err?.message || "Something went wrong!");
+			})
+		}, 3000);
+		// }
 	}, []);
 
 	useEffect(() => {
@@ -250,7 +249,7 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 			>
 				<Modal.Title>Add Channel</Modal.Title>
 				<div style={{ alignContent: "flex-start", alignItems: "flex-start", textAlign: "start" }}>
-					<Input width="100%" placeholder="Enter Channel name" onChange={(e) => { setCname(e.target.value) }}>
+					<Input width="100%" placeholder="Enter Channel name" onChange={(e) => { setCname(e.target.value.toLowerCase()) }}>
 						Channel Name
 					</Input>
 					<Spacer />

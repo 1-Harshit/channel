@@ -1,5 +1,6 @@
-import { Card, Grid, Spacer, Description, Image, Modal } from '@geist-ui/core';
-import { useState } from 'react';
+import { Card, Grid, Spacer, Description, Modal, Text, useToasts, Button } from '@geist-ui/core';
+import { useEffect, useState } from 'react';
+import { deleteMembership, getAllChannels, postMembership, Response } from '../api/callbacks';
 
 
 interface Channel {
@@ -13,18 +14,37 @@ interface Props {
 	channels: Channel[]
 }
 
-const People: React.FC<Props> = ({channels}) => {
+const People: React.FC<Props> = ({ channels }) => {
 
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const [channel, setChannel] = useState<Channel>({ name: "", description: "", createdAt: 0, createdByUsername: "" });
+	const [allChannel, setAllChannel] = useState<Channel[]>([{ name: "", description: "", createdAt: 0, createdByUsername: "" }]);
 
 	const closeModal = () => { setModalIsOpen(false) }
 
-	const userModal = (channel: Channel) => {
+	const userModal = (channel: Channel, action: string) => {
 		setChannel(channel);
 		setModalIsOpen(true);
 	}
+	useEffect(() => {
+		getAllChannels().then((res) => {
+			if (res.Status === 200) {
+				setAllChannel(res.Payload);
+			} else {
+				alert("Error in feching all channels " + res.Payload + res.Status);
+			}
+		}).catch((err) => {
+			alert("Error in feching all channels " + err || err?.message || "");
+		});
+	}, [])
 
+	const postMembershipp = (id: string) => {
+		postMembership(id).then((res) => {
+			console.log(res);
+		}).catch((err) => {
+			alert("post memebership failed with: " + err || err?.message || "")
+		})
+	}
 	return (<>
 		<Card width="100%">
 			<Description title={"List of channels registered"} content={<b>All Channel</b>} />
@@ -42,7 +62,7 @@ const People: React.FC<Props> = ({channels}) => {
 				<Description title={"Channel Name"} content={<b>{channel?.name}</b>} /> <Spacer />
 				<Description title={"Channel Description"} content={<b>{channel?.description}</b>} /><Spacer />
 				<Description title={"Channel Created By"} content={<b>{channel?.createdByUsername}</b>} /><Spacer />
-				<Description title={"Channel Created At"} content={<b>{new Date(channel.createdAt*1000).toDateString()}</b>} />
+				<Description title={"Channel Created At"} content={<b>{new Date(channel.createdAt * 1000).toDateString()}</b>} />
 			</div>
 
 			<Modal.Action onClick={closeModal}>
@@ -52,18 +72,43 @@ const People: React.FC<Props> = ({channels}) => {
 		</Modal>
 		<Card width="100%">
 			<Grid.Container gap={2}>
+				<Grid xs={24}>
+					<Text h3> Your channels</Text>
+				</Grid>
 				{channels.map((person) => {
 					return (
 						<Grid lg={8} justify="center">
-							<Card className="col" width="90%" style={{ cursor: "pointer" }} onClick={() => { userModal(person) }}>
+							<Card className="col" width="90%" style={{ cursor: "pointer" }} onClick={() => { userModal(person, 'l') }}>
 								<Description title={"Channel Name"} content={<b>{person?.name}</b>} /> <Spacer />
 								<Description title={"Channel Description"} content={<b>{person?.description}</b>} />
+								<Spacer />
+								<Button onClick={() => { deleteMembership(person.name) }}>Leave Channel</Button>
 							</Card>
 						</Grid>
 					);
 				})}
 			</Grid.Container>
-
+			<Grid.Container gap={2}>
+				<Grid xs={24}>
+					<Text h3> Other channels</Text>
+				</Grid>
+				{allChannel.map((person) => {
+					if (channels.some((channel) => { return channel.name === person.name }))
+						return <></>;
+					else return (
+						<Grid lg={8} justify="center">
+							<Card className="col" width="90%" style={{ cursor: "pointer" }}
+								onClick={() => { userModal(person, 'j') }}
+							>
+								<Description title={"Channel Name"} content={<b>{person?.name}</b>} /> <Spacer />
+								<Description title={"Channel Description"} content={<b>{person?.description}</b>} />
+								<Spacer />
+								<Button onClick={() => { postMembershipp(person.name) }}>Join Channel</Button>
+							</Card>
+						</Grid>
+					);
+				})}
+			</Grid.Container>
 		</Card>
 	</>);
 }

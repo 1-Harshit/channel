@@ -32,6 +32,7 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 			if (res.Status !== 200) {
 				alert("Failed with staus code " + res.Status);
 			} else {
+				sessionStorage.setItem("username", username);
 				setIsAuthenticated(true);
 			}
 		})

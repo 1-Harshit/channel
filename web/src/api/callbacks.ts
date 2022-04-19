@@ -121,8 +121,33 @@ const getChannels = async (): Promise<Response> => {
   const config = getConfig();
 
   let status, payload;
+  const username = sessionStorage.getItem("username");
   await axios
-    .get(BASE_URL + "/channels", config)
+    .get(BASE_URL + `/user/${username}/channels`, config)
+    .then((res) => {
+      payload = res.data;
+      console.log(payload);
+      status = res.status;
+    })
+    .catch((err) => {
+      console.log(err.message);
+      payload = err?.response?.data.error ?? ERROR_MESSAGE;
+      status = err?.response?.status ?? 500;
+    });
+
+  const response: Response = {
+    Payload: payload,
+    Status: status,
+  };
+  return response;
+};
+const getAllChannels = async (): Promise<Response> => {
+  const config = getConfig();
+
+  let status, payload;
+
+  await axios
+    .get(BASE_URL + `/channels`, config)
     .then((res) => {
       payload = res.data;
       console.log(payload);
@@ -242,6 +267,44 @@ const getUsers = async () => {
   return response;
 };
 
+const postMembership = async (channelId: string): Promise<Response> => {
+  const config = getConfig();
+
+  let status;
+  await axios
+    .post(BASE_URL + `/channel/${channelId}/membership`, config)
+    .then((res) => {
+      status = res.status;
+    })
+    .catch((err) => {
+      status = err?.response?.status ?? 500;
+    });
+
+  const response: Response = {
+    Status: status,
+  };
+  return response;
+};
+
+const deleteMembership = async (channelId: string): Promise<Response> => {
+  const config = getConfig();
+
+  let status, payload;
+  await axios
+    .delete(BASE_URL + `/channel/${channelId}/membership`, config)
+    .then((res) => {
+      status = res.status;
+    })
+    .catch((err) => {
+      status = err?.response?.status ?? 500;
+    });
+
+  const response: Response = {
+    Status: status,
+  };
+  return response;
+};
+
 export {
   postSignup,
   postLogin,
@@ -251,4 +314,7 @@ export {
   getMessages,
   postMessage,
   getUsers,
+  postMembership,
+  deleteMembership,
+  getAllChannels,
 };
