@@ -83,7 +83,7 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 		}
 		postMessage(params).then((res) => {
 			if (res.Status === 200) {
-				getMessages(activeChannel.name).then((res) => {
+				getMessages(activeChannel.name, 0).then((res) => {
 					if (res.Status === 200) {
 						setMessages(res.Payload);
 					} else {
@@ -130,10 +130,14 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 	}, []);
 
 	const updateMessages = async () => {
-		const messageLast = (messages[messages.length - 1]?.channelName === activeChannel.name ? messages[messages.length - 1]?.sentAt : 0) || 0;
+		let messageLast = 0;
+		if (messages.length > 0 && messages[0].channelName === activeChannel.name) {
+			messageLast = messages[messages.length - 1].sentAt;
+		}
 		getMessages(activeChannel.name, messageLast).then((res) => {
 			if (res.Status === 200) {
-				setMessages(res.Payload);
+
+				setMessages(messages.concat(res.Payload));
 			} else {
 				alert("Fetching message failed with error code: " + res.Status);
 			}
@@ -151,22 +155,14 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 
 		return () => clearInterval(interval);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [activeChannel]);
 
 	useEffect(() => {
 		handleScroll();
 	}, [messages])
 
 	useEffect(() => {
-		getMessages(activeChannel.name).then((res) => {
-			if (res.Status === 200) {
-				setMessages(res.Payload)
-			} else {
-				alert("Fetching message failed with error code: " + res.Status);
-			}
-		}).catch((err) => {
-			alert(err || err?.message || "Something went wrong!");
-		})
+		setMessages([]);
 	}, [activeChannel]);
 
 	const messagePane = (<><Grid xs={24}>
@@ -237,7 +233,7 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 				<>
 					<Link
 						href={"/#" + channel.name}
-						onClick={() => { setTab("m"); setActiveChannel(channel); }}
+						onClick={() => { setTab("m"); setMessages([]); setActiveChannel(channel); }}
 						color={activeChannel.name === channel.name}
 						key={channel.name}
 					>

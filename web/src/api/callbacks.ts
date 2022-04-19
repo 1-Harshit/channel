@@ -187,7 +187,7 @@ const deleteChannel = async (channelId: string) => {
 
 const getMessages = async (
   channelId: string,
-  lastMessageAt?: number
+  lastMessageAt: number
 ): Promise<Response> => {
   const config = getConfig();
 
@@ -195,7 +195,7 @@ const getMessages = async (
   await axios
     .get(BASE_URL + `/channel/${channelId}/messages`, {
       ...config,
-      params: { after_time: lastMessageAt || 0 },
+      params: { after_time: lastMessageAt },
     })
     .then((res) => {
       payload = res.data;
