@@ -90,7 +90,7 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 			if (res.Status === 200) {
 				getMessages(activeChannel.name, 0).then((res) => {
 					if (res.Status === 200) {
-						setMessages([...res.Payload]);
+						setMessages(res.Payload);
 					} else {
 						alert("Failed with error code: " + res.Status);
 					}
@@ -140,7 +140,8 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 	const updateMessages = async () => {
 		let messageLast = 0;
 		const mmm = messages
-
+		console.log(messages);
+		
 		if (mmm.length > 0) {
 			messageLast = mmm[mmm.length - 1].sentAt;
 		}
@@ -148,8 +149,8 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 		if (activeChannel.name !== emptychannel.name) {
 			getMessages(activeChannel.name, messageLast).then((res) => {
 				if (res.Status === 200) {
-
-					setMessages([...mmm.concat(res.Payload)]);
+					const newmsg = [...mmm.concat(res.Payload)];
+					setMessages(newmsg);
 				} else {
 					alert("Fetching message failed with error code: " + res.Status);
 				}
@@ -164,7 +165,7 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 
 		const interval = setInterval(() => {
 			updateMessages();
-		}, 5000);
+		}, 2000);
 
 		return () => clearInterval(interval);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
