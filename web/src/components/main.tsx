@@ -228,6 +228,9 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 		</Grid></>);
 
 	const sidebar = <Card width="100%" height="500px" paddingLeft="25%" style={{ borderWidth: 0 }}>
+		<Text style={{ color: "#555", letterSpacing: "1.5px", fontSize: "0.8125rem", cursor: "pointer" }} onClick={() => { setTab("c"); setActiveChannel(emptychannel) }}>
+			Hi, {sessionStorage.getItem("username") || "User"}!
+		</Text>
 		<Text style={{ color: "#888", letterSpacing: "1.5px", fontSize: "0.8125rem", cursor: "pointer" }} onClick={() => { setTab("c"); setActiveChannel(emptychannel) }}>
 			ALL CHANNELS
 		</Text>
