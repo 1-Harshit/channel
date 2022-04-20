@@ -12,8 +12,8 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 	const [password, setPassword] = useState("");
 	const [password1, setPassword1] = useState("");
 	const [name, setName] = useState("");
-	const [phone, setphone] = useState("");
-	const [design, setdesign] = useState("");
+	const [phone, setPhone] = useState("");
+	const [design, setDesign] = useState("");
 	const [avatar, setAvatar] = useState("");
 	const [s, setS] = useState(false);
 
@@ -62,6 +62,14 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 				alert("Failed with status code " + res.Status)
 			} else {
 				setS(true);
+				setName("");
+				setUsername("");
+				setPassword("");
+				setPassword1("");
+				setPhone("");
+				setDesign("");
+				setAvatar("");
+
 			}
 		});
 	}
@@ -111,12 +119,12 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 								</Grid>
 								<Grid.Container gap={2} justify="center">
 									<Grid xs={6}>
-										<Input placeholder="Enter Name" onChange={(e) => { setName(e.target.value) }}>
+										<Input placeholder="Enter Name" onChange={(e) => { setName(e.target.value) }} value={name}>
 											Name
 										</Input>
 									</Grid>
 									<Grid xs={6}>
-										<Input placeholder="Enter Username" onChange={(e) => { setUsername(e.target.value) }}>
+										<Input placeholder="Enter Username" onChange={(e) => { setUsername(e.target.value) }} value={username}>
 											Username
 										</Input>
 									</Grid>
@@ -124,12 +132,12 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 								<Spacer />
 								<Grid.Container gap={2} justify="center">
 									<Grid xs={6}>
-										<Input.Password placeholder="Enter Password" onChange={(e) => { setPassword(e.target.value) }}>
+										<Input.Password placeholder="Enter Password" onChange={(e) => { setPassword(e.target.value) }} value={password}>
 											Password
 										</Input.Password>
 									</Grid>
 									<Grid xs={6}>
-										<Input.Password placeholder="Re-Enter Password" onChange={(e) => { setPassword1(e.target.value) }}>
+										<Input.Password placeholder="Re-Enter Password" onChange={(e) => { setPassword1(e.target.value) }} value={password1}>
 											Confirm Password
 										</Input.Password>
 									</Grid>
@@ -137,12 +145,12 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 								<Spacer />
 								<Grid.Container gap={2} justify="center">
 									<Grid xs={6}>
-										<Input placeholder="Phone Number" onChange={(e) => { setphone(e.target.value) }}>
+										<Input placeholder="Phone Number" onChange={(e) => { setPhone(e.target.value) }} value={phone}>
 											Phone Number
 										</Input>
 									</Grid>
 									<Grid xs={6}>
-										<Input placeholder="Designation" onChange={(e) => { setdesign(e.target.value) }}>
+										<Input placeholder="Designation" onChange={(e) => { setDesign(e.target.value) }} value={design}>
 											Designation
 										</Input>
 									</Grid>
@@ -150,7 +158,7 @@ const AuthScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 								<Spacer />
 								<Grid.Container gap={2} justify="center">
 									<Grid xs={6}>
-										<Input placeholder="Avatar URL" width="100%" onChange={(e) => { setAvatar(e.target.value) }}>
+										<Input placeholder="Avatar URL" width="100%" onChange={(e) => { setAvatar(e.target.value) }} value={avatar}>
 											Avatar URL
 										</Input>
 									</Grid>
