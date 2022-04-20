@@ -10,7 +10,7 @@ interface Params {
 }
 
 const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
-	const [activeChannel, setActiveChannel] = useState({ description: "General Conversation", name: "general", createdAt: 1649745585, createdByUsername: "Harshit" });
+	const [activeChannel, setActiveChannel] = useState({ description: "", name: "", createdAt: 0, createdByUsername: "" });
 	const messageEndRef = useRef<HTMLDivElement>(null);
 	const [modalIsOpen, setIsOpen] = React.useState(false);
 	const [modalIsOpen1, setModalIsOpen1] = React.useState(false);
@@ -118,7 +118,6 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 			setTick(!tick);
 			setTab('c');
 		}).catch(err => {
-			console.log(err);
 			alert("Error creating channel");
 		});
 	}
@@ -137,20 +136,25 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 
 	const updateMessages = async () => {
 		let messageLast = 0;
-		if (messages.length > 0 && messages[0].channelName === activeChannel.name) {
-			console.log(messages[messages.length - 1].channelName);
-			messageLast = messages[messages.length - 1].sentAt;
-		}
-		getMessages(activeChannel.name, messageLast).then((res) => {
-			if (res.Status === 200) {
+		const mmm = messages
+		console.log(mmm);
 
-				setMessages(messages.concat(res.Payload));
-			} else {
-				alert("Fetching message failed with error code: " + res.Status);
-			}
-		}).catch((err) => {
-			alert(err || err?.message || "Something went wrong!");
-		});
+		if (mmm.length > 0) {
+			messageLast = mmm[mmm.length - 1].sentAt;
+		}
+
+		if (activeChannel.name !== "") {
+			getMessages(activeChannel.name, messageLast).then((res) => {
+				if (res.Status === 200) {
+
+					setMessages(mmm.concat(res.Payload));
+				} else {
+					alert("Fetching message failed with error code: " + res.Status);
+				}
+			}).catch((err) => {
+				alert(err || err?.message || "Something went wrong!");
+			});
+		}
 	}
 
 	useEffect(() => {
