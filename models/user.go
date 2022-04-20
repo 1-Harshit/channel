@@ -23,7 +23,7 @@ type UserResponse struct {
 	PhoneNo          string    `json:"phoneNo"`
 	Designation      string    `json:"designation"`
 	AvatarURL        string    `json:"avatarURL"`
-	ChannelsMemberOf []Channel `json:"channels"`
+	ChannelsMemberOf []Channel `json:"-"`
 }
 
 func Signup(username string, password string, name string, phoneNo string, designation string, avatarURL string) error {
@@ -60,14 +60,7 @@ func ListAllUsers() ([]UserResponse, error) {
 
 	var userResponses []UserResponse
 	for _, user := range users {
-		userResponses = append(userResponses, UserResponse{
-			Username:    user.Username,
-			Name:        user.Name,
-			LastLoginAt: user.LastLoginAt,
-			PhoneNo:     user.PhoneNo,
-			Designation: user.Designation,
-			AvatarURL:   user.AvatarURL,
-		})
+		userResponses = append(userResponses, *UserToUserResponse(user))
 	}
 
 	return userResponses, err
@@ -80,6 +73,16 @@ func GetUser(username string) (*UserResponse, error) {
 		return nil, err
 	}
 
+	return UserToUserResponse(user), nil
+}
+
+func GetUserChannels(username string) ([]Channel, error) {
+	var channels []Channel
+	err := db.Model(&User{Username: username}).Association("ChannelsMemberOf").Find(&channels)
+	return channels, err
+}
+
+func UserToUserResponse(user User) *UserResponse {
 	return &UserResponse{
 		Username:    user.Username,
 		Name:        user.Name,
@@ -87,12 +90,5 @@ func GetUser(username string) (*UserResponse, error) {
 		PhoneNo:     user.PhoneNo,
 		Designation: user.Designation,
 		AvatarURL:   user.AvatarURL,
-		// ChannelsMemberOf: user.ChannelsMemberOf,
-	}, nil
-}
-
-func GetUserChannels(username string) ([]Channel, error) {
-	var channels []Channel
-	err := db.Model(&User{Username: username}).Association("ChannelsMemberOf").Find(&channels)
-	return channels, err
+	}
 }

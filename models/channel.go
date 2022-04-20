@@ -64,7 +64,7 @@ func LeaveChannel(name string, username string) error {
 	return err
 }
 
-func GetChannelMembers(name string) ([]User, error) {
+func GetChannelMembers(name string) ([]UserResponse, error) {
 	channel := Channel{Name: name}
 	err := db.First(&channel).Error
 	if err != nil {
@@ -73,7 +73,14 @@ func GetChannelMembers(name string) ([]User, error) {
 
 	var members []User
 	err = db.Model(&channel).Association("Members").Find(&members)
-	return members, err
+
+	var userResponses []UserResponse
+
+	for _, member := range members {
+		userResponses = append(userResponses, *UserToUserResponse(member))
+	}
+
+	return userResponses, err
 }
 
 func IsMemberOfChannel(name string, username string) (bool, error) {
