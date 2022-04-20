@@ -33,7 +33,8 @@ const People: React.FC<Params> = ({ setIsAuthenticated }) => {
 	}
 
 	const logoutClick = () => {
-		localStorage.removeItem("token");
+		sessionStorage.removeItem("token");
+		sessionStorage.removeItem("username");
 		setIsAuthenticated(false);
 	}
 

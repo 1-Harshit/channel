@@ -126,11 +126,9 @@ const getChannels = async (): Promise<Response> => {
     .get(BASE_URL + `/user/${username}/channels`, config)
     .then((res) => {
       payload = res.data;
-      console.log(payload);
       status = res.status;
     })
     .catch((err) => {
-      console.log(err.message);
       payload = err?.response?.data.error ?? ERROR_MESSAGE;
       status = err?.response?.status ?? 500;
     });
@@ -150,11 +148,9 @@ const getAllChannels = async (): Promise<Response> => {
     .get(BASE_URL + `/channels`, config)
     .then((res) => {
       payload = res.data;
-      console.log(payload);
       status = res.status;
     })
     .catch((err) => {
-      console.log(err.message);
       payload = err?.response?.data.error ?? ERROR_MESSAGE;
       status = err?.response?.status ?? 500;
     });

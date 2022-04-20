@@ -54,7 +54,6 @@ const People: React.FC<Props> = ({ channels, setchannels, tick }) => {
 
 	const postMembershipp = (id: string) => {
 		postMembership(id).then((res) => {
-			console.log(res);
 			updateChannels()
 		}).catch((err) => {
 			alert("post memebership failed with: " + err || err?.message || "")
@@ -63,7 +62,6 @@ const People: React.FC<Props> = ({ channels, setchannels, tick }) => {
 
 	const deleteMembershipp = (id: string) => {
 		deleteMembership(id).then((res) => {
-			console.log(res);
 			updateChannels()
 		}).catch((err) => {
 			alert("delete memebership failed with: " + err || err?.message || "")

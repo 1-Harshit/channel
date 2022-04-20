@@ -10,7 +10,8 @@ interface Params {
 }
 
 const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
-	const [activeChannel, setActiveChannel] = useState({ description: "General Conversation", name: "general", createdAt: 1649745585, createdByUsername: "Harshit" });
+	const emptychannel = { description: "", name: "", createdAt: 0, createdByUsername: "" }
+	const [activeChannel, setActiveChannel] = useState(emptychannel);
 	const messageEndRef = useRef<HTMLDivElement>(null);
 	const [modalIsOpen, setIsOpen] = React.useState(false);
 	const [modalIsOpen1, setModalIsOpen1] = React.useState(false);
@@ -74,6 +75,7 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 			}
 			setTick(!tick);
 			setTab('c');
+			setActiveChannel(emptychannel)
 		}).catch((err) => {
 			alert(err || err?.message || "Something went wrong!");
 		})
@@ -88,7 +90,7 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 			if (res.Status === 200) {
 				getMessages(activeChannel.name, 0).then((res) => {
 					if (res.Status === 200) {
-						setMessages(res.Payload);
+						setMessages([...res.Payload]);
 					} else {
 						alert("Failed with error code: " + res.Status);
 					}
@@ -117,8 +119,8 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 			}
 			setTick(!tick);
 			setTab('c');
+			setActiveChannel(emptychannel)
 		}).catch(err => {
-			console.log(err);
 			alert("Error creating channel");
 		});
 	}
@@ -137,20 +139,24 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 
 	const updateMessages = async () => {
 		let messageLast = 0;
-		if (messages.length > 0 && messages[0].channelName === activeChannel.name) {
-			console.log(messages[messages.length - 1].channelName);
-			messageLast = messages[messages.length - 1].sentAt;
-		}
-		getMessages(activeChannel.name, messageLast).then((res) => {
-			if (res.Status === 200) {
+		const mmm = messages
 
-				setMessages(messages.concat(res.Payload));
-			} else {
-				alert("Fetching message failed with error code: " + res.Status);
-			}
-		}).catch((err) => {
-			alert(err || err?.message || "Something went wrong!");
-		});
+		if (mmm.length > 0) {
+			messageLast = mmm[mmm.length - 1].sentAt;
+		}
+
+		if (activeChannel.name !== emptychannel.name) {
+			getMessages(activeChannel.name, messageLast).then((res) => {
+				if (res.Status === 200) {
+
+					setMessages([...mmm.concat(res.Payload)]);
+				} else {
+					alert("Fetching message failed with error code: " + res.Status);
+				}
+			}).catch((err) => {
+				alert(err || err?.message || "Something went wrong!");
+			});
+		}
 	}
 
 	useEffect(() => {
@@ -167,10 +173,6 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 	useEffect(() => {
 		handleScroll();
 	}, [messages])
-
-	useEffect(() => {
-		setMessages([]);
-	}, [activeChannel]);
 
 	const messagePane = (<><Grid xs={24}>
 		<Grid.Container gap={2} direction="column">
@@ -225,13 +227,13 @@ const InsideScreen: React.FC<Params> = ({ setIsAuthenticated }) => {
 		</Grid></>);
 
 	const sidebar = <Card width="100%" height="500px" paddingLeft="25%" style={{ borderWidth: 0 }}>
-		<Text style={{ color: "#888", letterSpacing: "1.5px", fontSize: "0.8125rem", cursor: "pointer" }} onClick={() => { setTab("c"); }}>
+		<Text style={{ color: "#888", letterSpacing: "1.5px", fontSize: "0.8125rem", cursor: "pointer" }} onClick={() => { setTab("c"); setActiveChannel(emptychannel) }}>
 			ALL CHANNELS
 		</Text>
 		<Text style={{ color: "#888", letterSpacing: "1.5px", fontSize: "0.8125rem", cursor: "pointer" }} onClick={handleAddChannel}>ADD CHANNEL</Text>
 		<Spacer h={0.5} />
 
-		<Text style={{ color: "#888", letterSpacing: "1.5px", fontSize: "0.8125rem", cursor: "pointer" }} onClick={() => { setTab("p"); }}>
+		<Text style={{ color: "#888", letterSpacing: "1.5px", fontSize: "0.8125rem", cursor: "pointer" }} onClick={() => { setTab("p"); setActiveChannel(emptychannel) }}>
 			ALL PEOPLE
 		</Text>
 		<Spacer h={0.5} />
