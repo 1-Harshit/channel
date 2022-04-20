@@ -20,6 +20,21 @@ The application, `Channel` is a chat room system that allows people to send text
 
 ![ER_MODEL.png](github-assets/ER_MODEL.png)
 
+## How to run
+```bash
+# clone this repo
+git clone https://github.com/1-Harshit/channel.git
+cd channel
+# build the web app
+cd web
+npm install
+npm run build
+# run the server
+cd ..
+go mod download
+go run ./cmd/server/main.go
+```
+
 ## Tech Stack
 
 ### Backend
