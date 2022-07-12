@@ -3,7 +3,7 @@ module github.com/1-Harshit/channel
 go 1.16
 
 require (
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/golang-jwt/jwt/v4 v4.4.2
 	github.com/gorilla/mux v1.8.0
 	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
 	github.com/rs/cors v1.8.2
