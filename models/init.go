@@ -13,4 +13,8 @@ func init() {
 	db.AutoMigrate(&Channel{})
 	db.AutoMigrate(&Message{})
 	db.AutoMigrate(&User{})
+	Signup("h", "123", "Harshit", "1234567890", "Developer", "https://1-harshit.github.io/avatar.jpg")
+	Signup("kd", "123", "KD LAB PC", "1234567890", "Tester", "https://avatars0.githubusercontent.com/u/17098281?s=460&v=4")
+	Signup("guest", "guest", "Guest", "1234567890", "Guest", "https://avatars0.githubusercontent.com/u/17098584?s=460&v=4")
+	CreateChannel("general", "general convo", "h")
 }
