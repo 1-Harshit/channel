@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "https://harshit-chan.herokuapp.com";
 const ERROR_MESSAGE = "Error in API Call";
 
 // Interfaces

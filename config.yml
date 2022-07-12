@@ -3,7 +3,7 @@ SERVER:
   PORT: 8080
 
 FRONTEND:
-  URL: http://localhost:8080
+  URL: https://harshit-chan.herokuapp.com
 
 JWT:
   SECRET: secret
