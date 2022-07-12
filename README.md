@@ -2,6 +2,9 @@
 
 **CS315A - Principles of Database Systems**
 
+
+Deployed here: [harshit-chan.herokuapp.com/](https://harshit-chan.herokuapp.com/)
+
 ## Team
 
 **Bhuvan Singla**
